@@ -183,7 +183,7 @@
             pointer-events: none;
             width: 20px;
             height: 20px;
-            background: radial-gradient(circle, var(--oro) 10%, transparent 70%);
+            background: radial-gradient(circle, var(-- Oro) 10%, transparent 70%);
             border-radius: 50%;
             opacity: 0;
             animation: gold-dust-animation 1s forwards;
@@ -336,37 +336,52 @@
             transform: translateX(-50%);
         }
 
-        /* Galerías */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        /* Galerías con Carrusel Mejorado */
+        .gallery-container {
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .gallery-carousel {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: grab;
+            padding: 10px 0;
+            will-change: transform;
         }
 
         .gallery-item {
+            flex: 0 0 auto;
+            width: 320px;
             background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             cursor: pointer;
+            margin: 0 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
 
         .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.25);
+            border-color: var(--oro);
         }
 
         .gallery-item img {
             width: 100%;
-            height: 300px;
+            height: 320px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
 
         .gallery-item:hover img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .gallery-content {
@@ -376,83 +391,234 @@
 
         .gallery-content h3 {
             color: var(--oro);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .gallery-content p {
             color: var(--blanco);
             margin-bottom: 15px;
             line-height: 1.6;
+            font-size: 0.95rem;
         }
 
-        /* Paquetes */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 20px;
+        }
+
+        .carousel-btn {
+            background: var(--degradado-oro);
+            color: var(--negro);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px var(--oro);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border: 5px solid var(--oro);
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: -10px;
+            color: var(--blanco);
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: rgba(0, 0, 0, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            color: var(--oro);
+            transform: scale(1.1);
+        }
+
+        /* Paquetes Mejorados */
         .packages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
+            padding: 0 20px;
         }
 
         .package-card {
             background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
             text-align: center;
-            padding: 30px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         .package-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+            transform: translateY(-12px);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.25);
+            border-color: var(--oro);
         }
 
         .package-card h3 {
             color: var(--oro);
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .package-card .price {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--blanco);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-weight: bold;
+            position: relative;
+            display: inline-block;
         }
 
         .package-card .price span {
+            color: var(--oro);
+            position: relative;
+        }
+
+        .package-card .price:before {
+            content: '$';
+            font-size: 1.5rem;
+            position: absolute;
+            top: 5px;
+            left: -20px;
             color: var(--oro);
         }
 
         .package-card ul {
             list-style: none;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .package-card ul li {
             color: var(--blanco);
-            padding: 8px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 30px;
+            text-align: left;
+        }
+
+        .package-card ul li:before {
+            content: '★';
+            color: var(--oro);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
         }
 
         .package-card .btn {
             display: inline-block;
-            background-color: var(--rojo);
-            color: var(--blanco);
-            padding: 12px 30px;
+            background: var(--degradado-oro);
+            color: var(--negro);
+            padding: 15px 35px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
-            animation: parpadeo 2s infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
         }
 
         .package-card .btn:hover {
-            background-color: var(--oro);
-            color: var(--negro);
+            transform: scale(1.08);
+            box-shadow: 0 0 25px var(--oro);
+        }
+
+        .package-card.featured {
+            border-width: 3px;
+            border-color: var(--oro);
             transform: scale(1.05);
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        }
+
+        .package-card.featured:hover {
+            transform: scale(1.08) translateY(-12px);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--degradado-oro);
+            color: var(--negro);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Footer */
@@ -461,6 +627,8 @@
             padding: 60px 0 20px;
             text-align: center;
             position: relative;
+            width: 100%;
+            margin-top: 50px;
         }
 
         .social-icons {
@@ -551,6 +719,25 @@
                 padding: 15px 30px;
                 font-size: 1rem;
             }
+
+            .gallery-item {
+                width: 280px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .gallery-item {
+                width: 260px;
+                margin: 0 10px;
+            }
+            
+            .package-card.featured {
+                transform: scale(1);
+            }
+            
+            .package-card.featured:hover {
+                transform: translateY(-12px);
+            }
         }
 
         @media screen and (max-width: 576px) {
@@ -586,9 +773,24 @@
                 width: 100%;
             }
             
-            .gallery-grid,
+            .gallery-item {
+                width: 240px;
+            }
+            
             .packages-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .lightbox-close {
+                top: -30px;
+                right: 10px;
+                font-size: 30px;
+            }
+            
+            .carousel-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
             }
         }
 
@@ -609,6 +811,10 @@
             
             .section-title h2 {
                 font-size: 1.8rem;
+            }
+            
+            .gallery-item {
+                width: 220px;
             }
         }
     </style>
@@ -655,27 +861,51 @@
             <div class="section-title">
                 <h2>Galería de Mujeres</h2>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarina profesional">
-                    <div class="gallery-content">
-                        <h3>Espectáculo Femenino</h3>
-                        <p>Nuestras bailarinas te cautivarán con su elegancia, estilo y talento en el escenario.</p>
+            <div class="gallery-container">
+                <div class="gallery-carousel" id="carousel-chicas">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarina profesional">
+                        <div class="gallery-content">
+                            <h3>Espectáculo Femenino</h3>
+                            <p>Nuestras bailarinas te cautivarán con su elegancia, estilo y talento en el escenario.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1543946208-11d486546127?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Coreografía grupal femenina">
+                        <div class="gallery-content">
+                            <h3>Shows en Grupo</h3>
+                            <p>Coreografías sincronizadas que demuestran la coordinación y el talento de nuestras artistas.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1511632765481-4a4b2b0e99de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarina acrobática">
+                        <div class="gallery-content">
+                            <h3>Acrobacias Aéreas</h3>
+                            <p>Espectaculares números que combinan baile con acrobacias aéreas para un show único.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarina con vestuario elegante">
+                        <div class="gallery-content">
+                            <h3>Vestuario Elegante</h3>
+                            <p>Trajes deslumbrantes que añaden glamour a nuestras presentaciones.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1519707575-47f636e7a4e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarina en movimiento">
+                        <div class="gallery-content">
+                            <h3>Movimientos Precisos</h3>
+                            <p>Coreografías perfectamente sincronizadas con los mejores movimientos de baile.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1543946208-11d486546127?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Coreografía grupal femenina">
-                    <div class="gallery-content">
-                        <h3>Shows en Grupo</h3>
-                        <p>Coreografías sincronizadas que demuestran la coordinación y el talento de nuestras artistas.</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1511632765481-4a4b2b0e99de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarina acrobática">
-                    <div class="gallery-content">
-                        <h3>Acrobacias Aéreas</h3>
-                        <p>Espectaculares números que combinan baile con acrobacias aéreas para un show único.</p>
-                    </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" data-carousel="chicas">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" data-carousel="chicas">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -687,27 +917,51 @@
             <div class="section-title">
                 <h2>Galería de Hombres</h2>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarín profesional">
-                    <div class="gallery-content">
-                        <h3>Espectáculo Masculino</h3>
-                        <p>Nuestros bailarines profesionales te sorprenderán con coreografías llenas de energía y estilo.</p>
+            <div class="gallery-container">
+                <div class="gallery-carousel" id="carousel-chicos">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarín profesional">
+                        <div class="gallery-content">
+                            <h3>Espectáculo Masculino</h3>
+                            <p>Nuestros bailarines profesionales te sorprenderán con coreografías llenas de energía y estilo.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Coreografía grupal">
+                        <div class="gallery-content">
+                            <h3>Coreografías Grupales</h3>
+                            <p>Shows sincronizados con los mejores movimientos y técnicas de baile profesional.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1537365587684-f4901e4e70e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarín acrobático">
+                        <div class="gallery-content">
+                            <h3>Acrobacias y Destreza</h3>
+                            <p>Movimientos impresionantes que combinan baile y acrobacias para un show inolvidable.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarín en espectáculo">
+                        <div class="gallery-content">
+                            <h3>Espectáculo Energético</h3>
+                            <p>Presentaciones llenas de energía que mantendrán al público al bedge de sus asientos.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1543946208-11d486546127?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarín con traje elegante">
+                        <div class="gallery-content">
+                            <h3>Estilo y Elegancia</h3>
+                            <p>Trajes elegantes que complementan la precisión de nuestros bailarines.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Coreografía grupal">
-                    <div class="gallery-content">
-                        <h3>Coreografías Grupales</h3>
-                        <p>Shows sincronizados con los mejores movimientos y técnicas de baile profesional.</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1537365587684-f4901e4e70e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarín acrobático">
-                    <div class="gallery-content">
-                        <h3>Acrobacias y Destreza</h3>
-                        <p>Movimientos impresionantes que combinan baile y acrobacias para un show inolvidable.</p>
-                    </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" data-carousel="chicos">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" data-carousel="chicos">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -722,30 +976,33 @@
             <div class="packages-grid">
                 <div class="package-card">
                     <h3>Básico</h3>
-                    <div class="price"><span>$199</span></div>
+                    <div class="price"><span>199</span></div>
                     <ul>
                         <li>Show de 1 hora</li>
                         <li>2 bailarines</li>
                         <li>Coreografía especial</li>
                         <li>Música personalizada</li>
+                        <li>Sesión de fotos</li>
                     </ul>
                     <a href="#reserva" class="btn">Reservar</a>
                 </div>
-                <div class="package-card">
+                <div class="package-card featured">
+                    <div class="featured-badge">POPULAR</div>
                     <h3>Premium</h3>
-                    <div class="price"><span>$399</span></div>
+                    <div class="price"><span>399</span></div>
                     <ul>
                         <li>Show de 2 horas</li>
                         <li>4 bailarines</li>
                         <li>Coreografía exclusiva</li>
                         <li>Vestuario especial</li>
                         <li>Efectos de luces</li>
+                        <li>Sesión VIP</li>
                     </ul>
                     <a href="#reserva" class="btn">Reservar</a>
                 </div>
                 <div class="package-card">
                     <h3>VIP</h3>
-                    <div class="price"><span>$699</span></div>
+                    <div class="price"><span>699</span></div>
                     <ul>
                         <li>Show de 3 horas</li>
                         <li>6 bailarines</li>
@@ -753,6 +1010,7 @@
                         <li>Vestuario de lujo</li>
                         <li>Efectos especiales</li>
                         <li>Experiencia completa</li>
+                        <li>Regalo exclusivo</li>
                     </ul>
                     <a href="#reserva" class="btn">Reservar</a>
                 </div>
@@ -772,6 +1030,14 @@
             </div>
         </div>
     </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close" id="lightbox-close">&times;</span>
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -882,6 +1148,190 @@
             if (heroBg) {
                 const rate = scrolled * -0.5;
                 heroBg.style.transform = `translate3d(0px, ${rate}px, 0px) scale(1.2)`;
+            }
+        });
+
+        // Funcionalidad de carrusel mejorada
+        document.querySelectorAll('.gallery-carousel').forEach(carousel => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let velocity = 0;
+            let animationFrame;
+            let lastScrollTime = 0;
+
+            // Inercia para el carrusel
+            const smoothScroll = () => {
+                velocity *= 0.95; // Reducir la velocidad gradualmente
+                
+                if (Math.abs(velocity) > 0.5) {
+                    carousel.scrollLeft += velocity;
+                    animationFrame = requestAnimationFrame(smoothScroll);
+                } else {
+                    velocity = 0;
+                    cancelAnimationFrame(animationFrame);
+                }
+            };
+
+            carousel.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+                velocity = 0;
+                cancelAnimationFrame(animationFrame);
+                carousel.style.cursor = 'grabbing';
+                carousel.style.transition = 'none';
+            });
+            
+            carousel.addEventListener('mouseleave', () => {
+                if (isDown) {
+                    isDown = false;
+                    carousel.style.cursor = 'grab';
+                    carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    
+                    // Aplicar inercia
+                    const now = Date.now();
+                    const elapsed = now - lastScrollTime;
+                    if (elapsed < 100) { // Solo aplicar inercia si el desplazamiento fue reciente
+                        animationFrame = requestAnimationFrame(smoothScroll);
+                    }
+                }
+            });
+            
+            carousel.addEventListener('mouseup', () => {
+                if (isDown) {
+                    isDown = false;
+                    carousel.style.cursor = 'grab';
+                    carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    
+                    // Aplicar inercia
+                    const now = Date.now();
+                    const elapsed = now - lastScrollTime;
+                    if (elapsed < 100) { // Solo aplicar inercia si el desplazamiento fue reciente
+                        animationFrame = requestAnimationFrame(smoothScroll);
+                    }
+                }
+            });
+            
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2;
+                
+                // Calcular velocidad para la inercia
+                const now = Date.now();
+                if (lastScrollTime !== 0) {
+                    const deltaTime = now - lastScrollTime;
+                    if (deltaTime > 0) {
+                        velocity = (carousel.scrollLeft - scrollLeft) / deltaTime * 16;
+                    }
+                }
+                lastScrollTime = now;
+                
+                carousel.scrollLeft = scrollLeft - walk;
+            });
+
+            // Soporte para dispositivos táctiles
+            carousel.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+                velocity = 0;
+                cancelAnimationFrame(animationFrame);
+                carousel.style.transition = 'none';
+            }, { passive: true });
+            
+            carousel.addEventListener('touchend', () => {
+                if (isDown) {
+                    isDown = false;
+                    carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    
+                    // Aplicar inercia
+                    const now = Date.now();
+                    const elapsed = now - lastScrollTime;
+                    if (elapsed < 100) {
+                        animationFrame = requestAnimationFrame(smoothScroll);
+                    }
+                }
+            });
+            
+            carousel.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2;
+                
+                // Calcular velocidad para la inercia
+                const now = Date.now();
+                if (lastScrollTime !== 0) {
+                    const deltaTime = now - lastScrollTime;
+                    if (deltaTime > 0) {
+                        velocity = (carousel.scrollLeft - scrollLeft) / deltaTime * 16;
+                    }
+                }
+                lastScrollTime = now;
+                
+                carousel.scrollLeft = scrollLeft - walk;
+            }, { passive: true });
+        });
+
+        // Controles de carrusel
+        document.querySelectorAll('.carousel-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const carouselId = btn.getAttribute('data-carousel');
+                const carousel = document.getElementById(`carousel-${carouselId}`);
+                const itemWidth = carousel.querySelector('.gallery-item').offsetWidth + 30;
+                
+                if (btn.classList.contains('next-btn')) {
+                    carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
+                } else {
+                    carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightbox.classList.add('active');
+                lightboxImg.src = img.src;
+                body.style.overflow = 'hidden';
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                body.style.overflow = 'auto';
+            }
+        });
+
+        // Efecto de tecleo para el título
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                const originalText = heroTitle.innerHTML;
+                heroTitle.innerHTML = '';
+                
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < originalText.length) {
+                        heroTitle.innerHTML += originalText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50);
+                    }
+                };
+                
+                setTimeout(typeWriter, 500);
             }
         });
     </script>
