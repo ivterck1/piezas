@@ -1,351 +1,889 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>H y M · Las Vegas 2026 — Shiny Slider Edition</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Cinzel:wght@600;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --gold:#ffd76a; --gold-2:#fff0b3; --gold-3:#b98a2a; --gold-deep:#8a6a1c; --gold-shadow:rgba(212,175,55,.45);
-      --red:#c2102e; --black:#070709; --ink:#0e0f13; --white:#fff; --muted:#161821; --container:min(1240px,92vw);
-      --card-glow:0 10px 40px rgba(255,215,106,.18), 0 0 0 1px rgba(255,255,255,.04) inset;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:radial-gradient(130% 120% at 50% -10%, #1b1e29 0%, #0a0b0f 55%, #030307 100%);color:var(--white);font-family:Montserrat,system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
-    img{max-width:100%;display:block}
-    a{color:inherit;text-decoration:none}
-    .container{width:var(--container);margin:auto}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Vegas - Espectáculo de Bailarines</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rojo: #d92626;
+            --negro: #000000;
+            --blanco: #ffffff;
+            --oro: #ffd700;
+            --gris-oscuro: #1a1a1a;
+            --degradado-oro: linear-gradient(145deg, #ffd700, #daa520, #b8860b);
+            --degradado-elegante: linear-gradient(135deg, rgba(217,38,38,0.8), rgba(0,0,0,0.7), rgba(255,215,0,0.6));
+        }
 
-    .gold-text{background:linear-gradient(180deg,var(--gold),var(--gold-3));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 10px 30px rgba(255,215,106,.25)}
-    .gold-border{position:relative}
-    .gold-border:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--gold-2),var(--gold),var(--gold-deep));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-    #sparkles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
+        body {
+            background-color: var(--negro);
+            color: var(--blanco);
+            overflow-x: hidden;
+        }
 
-    header{position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);transition:all .35s ease}
-    header .wrap{width:var(--container);margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-    header .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:48px;aspect-ratio:1;border-radius:12px;background:radial-gradient(140% 140% at 0% 0%, var(--gold-2),var(--gold)),radial-gradient(100% 120% at 100% 100%, rgba(255,255,255,.25), transparent 60%);box-shadow:inset 0 0 20px rgba(255,255,255,.35),0 0 0 2px var(--gold-3),0 10px 28px var(--gold-shadow);position:relative;overflow:hidden}
-    .logo:after{content:"";position:absolute;inset:-120%;background:conic-gradient(from 0deg,transparent 0 25%,rgba(255,255,255,.5) 27% 33%,transparent 35% 100%);animation:spin 6s linear infinite}
-    @keyframes spin{to{transform:rotate(1turn)}}
-    header h1{font-family:Cinzel,serif;font-size:clamp(16px,2.6vw,28px);letter-spacing:.6px;margin:0}
-    header.scrolled{background:rgba(3,4,8,.65);box-shadow:0 12px 28px rgba(0,0,0,.45)}
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
 
-    nav.desktop{display:flex;align-items:center;gap:6px}
-    nav.desktop a{position:relative;padding:14px 16px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
-    nav.desktop a:after{content:"";position:absolute;left:16px;right:16px;bottom:6px;height:3px;border-radius:3px;opacity:0;transform:translateY(6px);background:radial-gradient(8px 8px at 0% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 25% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 50% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 75% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 100% 50%,var(--gold-2),transparent 60%);filter:drop-shadow(0 0 8px var(--gold));transition:opacity .25s,transform .25s;animation:fairy 2s linear infinite}
-    @keyframes fairy{0%{background-position:0 0}100%{background-position:160px 0}}
-    nav.desktop a:hover:after{opacity:1;transform:translateY(0)}
+        /* Header y Navegación */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
 
-    .cta{margin-left:8px;padding:12px 18px;border-radius:999px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--gold-3);background:linear-gradient(135deg,#382800,#7e5b0a,#f9e071);color:#1a1200;box-shadow:0 0 0 2px rgba(0,0,0,.25),0 14px 34px var(--gold-shadow);position:relative;overflow:hidden}
-    .cta .shine{position:absolute;inset:-20%;background:conic-gradient(from 220deg,transparent 0 65%, rgba(255,255,255,.65) 70% 72%, transparent 77% 100%);animation:liquid 2.8s ease-in-out infinite}
-    @keyframes liquid{0%{transform:translateX(-60%) rotate(0)}60%{transform:translateX(60%) rotate(10deg)}100%{transform:translateX(120%) rotate(0)}}
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .hamb{width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.12);display:none;place-items:center;cursor:pointer;transition:transform .35s}
-    .hamb:hover{transform:translateY(-1px)}
-    .hamb .lines{width:24px;height:16px;position:relative}
-    .hamb .lines span{position:absolute;left:0;right:0;height:2px;background:var(--white);border-radius:2px;transition:transform .35s,opacity .35s}
-    .hamb .lines span:nth-child(1){top:0}
-    .hamb .lines span:nth-child(2){top:7px}
-    .hamb .lines span:nth-child(3){top:14px}
-    .hamb.active{transform:rotate(180deg)}
-    .hamb.active .lines span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .hamb.active .lines span:nth-child(2){opacity:0}
-    .hamb.active .lines span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .mnav{position:fixed;inset:0;background:rgba(5,6,10,.78);backdrop-filter:blur(8px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .35s;z-index:40}
-    .mnav.open{opacity:1;pointer-events:auto}
-    .mnav .panel{width:min(560px,90vw);border-radius:28px;padding:28px;background:radial-gradient(120% 120% at 0% 0%, rgba(255,215,106,.18), rgba(255,255,255,.02));border:1px solid rgba(255,215,106,.25);box-shadow:0 10px 40px rgba(0,0,0,.5)}
-    .mnav .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .mnav a{display:grid;place-items:center;padding:20px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);text-transform:uppercase;font-weight:900;letter-spacing:.8px;position:relative;overflow:hidden;transform:translateY(8px);opacity:0}
-    .mnav.open a{animation:stagger .4s .1s forwards}
-    .mnav.open a:nth-child(2){animation-delay:.18s}
-    .mnav.open a:nth-child(3){animation-delay:.26s}
-    .mnav.open a:nth-child(4){animation-delay:.34s}
-    .mnav.open a:nth-child(5){animation-delay:.42s}
-    @keyframes stagger{to{transform:translateY(0);opacity:1}}
-    .mnav a.mn-cta{grid-column:1/-1;background:linear-gradient(135deg,#2a2000,#8d6b12,#ffe58f);color:#1a1200;border:1px solid var(--gold-3);box-shadow:0 12px 32px var(--gold-shadow)}
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--blanco);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
 
-    .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
-    .hero .layer.city{position:absolute;inset:0;background:linear-gradient(to top, rgba(3,3,4,.92) 0 35%, rgba(3,3,4,.6) 60%, rgba(3,3,4,.2) 100%), url('https://images.unsplash.com/photo-1544470350-47edb9a37d10?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;filter:saturate(1.05) contrast(1.05);transform:scale(1.03)}
-    .hero .layer.aurora{position:absolute;inset:-30% -20%;background:conic-gradient(from 0deg at 50% 110%, rgba(255,255,255,.15), transparent 30% 70%, rgba(255,255,255,.15));mix-blend-mode:screen;filter:blur(16px);animation:sweep 12s ease-in-out infinite}
-    .hero .layer.aurora:after{content:"";position:absolute;inset:0;background:conic-gradient(from 180deg at 50% 110%, rgba(255,255,255,.12), transparent 40% 80%, rgba(255,255,255,.12));animation:sweep 14s ease-in-out infinite}
-    @keyframes sweep{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+        .logo span {
+            color: var(--oro);
+            margin-right: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
 
-    .hero .group{position:relative;transform-style:preserve-3d;perspective:1000px;z-index:1}
-    .hero .badge{display:inline-block;padding:8px 12px;border-radius:999px;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-size:12px;color:#1b1200;background:linear-gradient(90deg,var(--gold-2),var(--gold));border:1px solid var(--gold-3);box-shadow:0 10px 24px var(--gold-shadow)}
-    .hero h2{font-family:Cinzel,serif;font-weight:900;font-size:clamp(32px,7.6vw,86px);line-height:1.02;text-align:center;margin:18px 0 10px;text-shadow:0 10px 40px rgba(0,0,0,.6)}
+        /* Menú Desktop */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
 
-    .slot{display:inline-grid;grid-auto-flow:column;gap:8px;margin:18px 0 28px;padding:8px;border-radius:18px;background:linear-gradient(180deg,#0c0d11,#191b24);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 -8px 16px rgba(0,0,0,.6),0 12px 28px rgba(0,0,0,.45)}
-    .digit{width:min(18vw,88px);height:min(18vw,88px);border-radius:14px;display:grid;place-items:center;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));border:1px solid var(--gold-3);box-shadow:inset 0 0 16px rgba(255,255,255,.35),0 10px 22px var(--gold-shadow);overflow:hidden;position:relative}
-    .digit:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 40%,transparent 60%,rgba(0,0,0,.25));mix-blend-mode:soft-light}
-    .digit .reel{will-change:transform;display:inline-block;white-space:pre;font-weight:900;font-size:clamp(28px,6.4vw,56px);color:#1b1200}
+        .nav-menu li {
+            margin: 0 12px;
+        }
 
-    .hero .cta-row,.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    .btn{padding:14px 22px;border-radius:999px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06)}
-    .btn:hover{background:rgba(255,255,255,.12)}
-    .btn.gold{border-color:var(--gold-3);background:linear-gradient(135deg,#2a1f00,#f6dc7f);color:#1b1200;position:relative;overflow:hidden}
-    .btn.gold:after{content:"";position:absolute;inset:0;background:radial-gradient(220px 220px at var(--x,0) var(--y,0),rgba(255,255,255,.45),transparent 40%);opacity:0;transition:opacity .25s}
-    .btn.gold:hover:after{opacity:1}
-    .scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:12px;letter-spacing:1px;opacity:.75}
+        .nav-menu a {
+            color: var(--blanco);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
 
-    section{position:relative;padding:clamp(60px,8vw,110px) 0;z-index:1}
-    .section-title{font-family:Cinzel,serif;font-size:clamp(24px,4.8vw,44px);margin:0 0 16px}
-    .section-sub{opacity:.85;max-width:900px}
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--degradado-oro);
+            transition: width 0.3s ease;
+        }
 
-    .card{position:relative;border-radius:18px;overflow:hidden;background:#0f1118;border:1px solid rgba(255,255,255,.08);box-shadow:var(--card-glow);aspect-ratio:3/4;transform:translateY(24px);opacity:0;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
-    .card.revealed{transform:translateY(0);opacity:1}
-    .card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.05)}
-    .card .tag{position:absolute;left:12px;top:12px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(4px);font-size:12px;font-weight:800;text-transform:uppercase}
-    .card .overlay{position:absolute;inset:auto 0 0 0;padding:14px;background:linear-gradient(to top, rgba(0,0,0,.86), transparent 70%);display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-    .name{font-weight:900;letter-spacing:.5px}
-    .pill{padding:8px 12px;border-radius:999px;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;font-weight:900;border:1px solid var(--gold-3);box-shadow:0 6px 18px var(--gold-shadow)}
-    .tilt{transform-style:preserve-3d}
-    .tilt:hover{transform:perspective(800px) rotateX(4deg) rotateY(-4deg)}
+        .nav-menu a:hover {
+            color: var(--oro);
+        }
 
-    /* === Carousel shiny === */
-    .carousel{position:relative}
-    .carousel .viewport{position:relative;overflow:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:8px 4px 18px;mask-image:linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%)}
-    .carousel .track{display:flex;gap:14px}
-    .carousel .track .card{min-width:72vw;scroll-snap-align:center;transition:transform .35s ease, box-shadow .35s ease, filter .35s ease}
-    @media(min-width:680px){.carousel .track .card{min-width:40vw}}
-    @media(min-width:1024px){.carousel .track .card{min-width:26vw}}
-    .carousel .track .card.active{transform:scale(1.04);box-shadow:0 16px 60px rgba(255,215,106,.20), var(--card-glow);filter:saturate(1.12)}
-    .carousel .viewport:before,.carousel .viewport:after{content:"";position:absolute;top:0;bottom:0;width:70px;pointer-events:none;z-index:2}
-    .carousel .viewport:before{left:0;background:linear-gradient(90deg, rgba(3,4,8,1), rgba(3,4,8,0))}
-    .carousel .viewport:after{right:0;background:linear-gradient(270deg, rgba(3,4,8,1), rgba(3,4,8,0))}
-    .carousel .nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;border:0;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1a1200;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;box-shadow:0 10px 24px var(--gold-shadow);cursor:pointer}
-    .carousel .nav.prev{left:6px}
-    .carousel .nav.next{right:6px}
-    .carousel .nav svg{width:20px;height:20px}
-    .carousel .progress{height:4px;border-radius:999px;background:rgba(255,255,255,.08);margin:8px auto 0;position:relative;overflow:hidden}
-    .carousel .progress span{position:absolute;left:0;top:0;bottom:0;width:20%;background:linear-gradient(90deg,var(--gold-2),var(--gold));box-shadow:0 6px 16px var(--gold-shadow)}
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
 
-    #paquetes{background:radial-gradient(120% 120% at 0% 0%, rgba(255,215,106,.09), transparent 60%)}
-    .pricing{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .price-card{grid-column:span 4;border-radius:24px;padding:24px;background:linear-gradient(180deg,#14161f,#0b0d14);border:1px solid rgba(255,255,255,.08);box-shadow:var(--card-glow);position:relative;overflow:hidden;transform:translateY(24px);opacity:0;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
-    .price-card.revealed{transform:translateY(0);opacity:1}
-    .price-card .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .badge{padding:8px 10px;border-radius:12px;border:1px solid var(--gold-3);background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;font-weight:900;text-transform:uppercase;letter-spacing:.8px}
-    .price{font-size:clamp(22px,4vw,36px);font-weight:900}
-    .features{margin:12px 0 18px;opacity:.9}
-    .features li{margin:10px 0}
+        .reserva-btn {
+            background-color: var(--rojo);
+            color: var(--blanco) !important;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            animation: parpadeo 2s infinite;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(217, 38, 38, 0.7);
+        }
 
-    #reserva{background:radial-gradient(120% 120% at 100% 0%, rgba(255,215,106,.12), transparent 60%);border-top:1px solid rgba(255,215,106,.18)}
-    .cta-big{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;padding:18px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);box-shadow:var(--card-glow)}
-    .cta-big .whatsapp{display:inline-flex;align-items:center;gap:10px;padding:16px 22px;border-radius:999px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;border:1px solid var(--gold-3);box-shadow:0 14px 34px var(--gold-shadow)}
+        .reserva-btn:hover {
+            background-color: var(--oro);
+            color: var(--negro) !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--oro);
+        }
 
-    footer{padding:34px 0 60px;border-top:1px solid rgba(255,255,255,.1);opacity:.82;text-align:center}
+        .reserva-btn:after {
+            display: none;
+        }
 
-    @media (max-width: 980px){
-      nav.desktop{display:none}
-      .hamb{display:grid}
-      .pricing{grid-template-columns:1fr}
-      .price-card{grid-column:1/-1}
-    }
-    @media (prefers-reduced-motion: reduce){
-      .logo:after,.hero .layer.aurora,.cta .shine{animation:none}
-    }
-  </style>
+        @keyframes parpadeo {
+            0% { box-shadow: 0 0 10px var(--rojo); }
+            50% { box-shadow: 0 0 20px var(--rojo), 0 0 30px var(--rojo); }
+            100% { box-shadow: 0 0 10px var(--rojo); }
+        }
+
+        /* Menú Hamburguesa */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            margin: 6px 0;
+            background-color: var(--blanco);
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+            background-color: var(--oro);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+            background-color: var(--oro);
+        }
+
+        /* Efecto Polvo Dorado */
+        .gold-dust {
+            position: absolute;
+            pointer-events: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--oro) 10%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: gold-dust-animation 1s forwards;
+            z-index: 9999;
+        }
+
+        @keyframes gold-dust-animation {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Sección Hero con Parallax */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') center/cover no-repeat;
+            z-index: -2;
+            transform: translateZ(-10px) scale(2);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 0 20px;
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--blanco);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-title span {
+            color: var(--oro);
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background-color: var(--rojo);
+            color: var(--blanco);
+            padding: 18px 45px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            animation: parpadeo 2s infinite;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(217, 38, 38, 0.7);
+        }
+
+        .hero-btn:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 100%; }
+        }
+
+        .hero-btn:hover {
+            background-color: var(--oro);
+            color: var(--negro);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--oro);
+        }
+
+        /* Secciones */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            color: var(--blanco);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--degradado-oro);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Galerías */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .gallery-item {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-content h3 {
+            color: var(--oro);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .gallery-content p {
+            color: var(--blanco);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* Paquetes */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .package-card {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+            padding: 30px;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .package-card h3 {
+            color: var(--oro);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .package-card .price {
+            font-size: 2.5rem;
+            color: var(--blanco);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .package-card .price span {
+            color: var(--oro);
+        }
+
+        .package-card ul {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .package-card ul li {
+            color: var(--blanco);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .package-card .btn {
+            display: inline-block;
+            background-color: var(--rojo);
+            color: var(--blanco);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: parpadeo 2s infinite;
+        }
+
+        .package-card .btn:hover {
+            background-color: var(--oro);
+            color: var(--negro);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--gris-oscuro);
+            padding: 60px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .social-icons {
+            margin-bottom: 30px;
+        }
+
+        .social-icons a {
+            color: var(--blanco);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .social-icons a:hover {
+            color: var(--oro);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 30px;
+            color: var(--blanco);
+            font-size: 1rem;
+        }
+
+        .copyright span {
+            color: var(--oro);
+            font-weight: bold;
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 992px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                flex-direction: column;
+                padding: 100px 20px 40px;
+                transition: right 0.5s ease;
+                z-index: 1000;
+                justify-content: flex-start;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-menu li {
+                margin: 15px 0;
+                opacity: 0;
+                transform: translateX(50px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-menu.active li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .nav-menu.active li:nth-child(1) { transition-delay: 0.1s; }
+            .nav-menu.active li:nth-child(2) { transition-delay: 0.2s; }
+            .nav-menu.active li:nth-child(3) { transition-delay: 0.3s; }
+            .nav-menu.active li:nth-child(4) { transition-delay: 0.4s; }
+            .nav-menu.active li:nth-child(5) { transition-delay: 0.5s; }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-content {
+                padding: 0 15px;
+            }
+
+            .hero-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .reserva-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .hero {
+                text-align: center;
+                padding: 0 15px;
+            }
+
+            .hero-content {
+                width: 100%;
+            }
+            
+            .gallery-grid,
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Ajustes para móviles muy pequeños */
+        @media screen and (max-width: 400px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .hero-btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="sparkles"></canvas>
-
-  <header id="header">
-    <div class="wrap">
-      <a href="#inicio" class="brand" aria-label="Inicio"><div class="logo" aria-hidden="true"></div><h1><span class="gold-text">H y M</span> — Las Vegas</h1></a>
-      <nav class="desktop" aria-label="Principal">
-        <a href="#inicio">Inicio</a>
-        <a href="#chicos">Chicos</a>
-        <a href="#chicas">Chicas</a>
-        <a href="#paquetes">Paquetes</a>
-        <a href="#reserva" class="cta gold-border"><span class="shine"></span>¡Reserva Ya!</a>
-      </nav>
-      <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><div class="lines"><span></span><span></span><span></span></div></button>
-    </div>
-  </header>
-
-  <div class="mnav" id="mnav" role="dialog" aria-modal="true">
-    <div class="panel gold-border">
-      <div class="grid">
-        <a class="mn-link" href="#inicio">Inicio</a>
-        <a class="mn-link" href="#chicos">Chicos</a>
-        <a class="mn-link" href="#chicas">Chicas</a>
-        <a class="mn-link" href="#paquetes">Paquetes</a>
-        <a class="mn-link mn-cta" href="#reserva">¡Reserva Ya!</a>
-      </div>
-    </div>
-  </div>
-
-  <section class="hero" id="inicio">
-    <div class="layer city" aria-hidden="true"></div>
-    <div class="layer aurora" aria-hidden="true"></div>
-    <div class="group container" id="parallax">
-      <span class="badge" data-depth="40">Temporada 2026 · Las Vegas</span>
-      <h2 data-depth="20">Shows premium que encienden la noche con <span class="gold-text">estilo</span> y <span class="gold-text">oro</span>.</h2>
-      <div class="slot" aria-label="Año 2026 en tragamonedas" data-depth="10">
-        <div class="digit"><div class="reel" data-target="2">0</div></div>
-        <div class="digit"><div class="reel" data-target="0">0</div></div>
-        <div class="digit"><div class="reel" data-target="2">0</div></div>
-        <div class="digit"><div class="reel" data-target="6">0</div></div>
-      </div>
-      <div class="hero-ctas" data-depth="0" style="text-align:center">
-        <a href="#reserva" class="btn gold" id="cta-hero">¡Reserva Ya!</a>
-        <a href="#paquetes" class="btn">Ver Paquetes</a>
-      </div>
-      <div class="scroll-hint">▼ Desliza para descubrir</div>
-    </div>
-  </section>
-
-  <section id="chicos">
-    <div class="container">
-      <h3 class="section-title">Chicos</h3>
-      <p class="section-sub">Talento, presencia y performance de alto impacto. Vibra de casino con clase.</p>
-      <div class="carousel" id="slider-chicos">
-        <button class="nav prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
-        <div class="viewport gold-border">
-          <div class="track">
-            <article class="card tilt"><span class="tag">Nuevo</span><img src="https://images.unsplash.com/photo-1562158070-9a6c0d7b3550?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino elegante"/><div class="overlay"><strong class="name">Axel</strong><span class="pill">Gold Show</span></div></article>
-            <article class="card tilt"><span class="tag">Top</span><img src="https://images.unsplash.com/photo-1518826778770-0a42a9c91f99?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino dark"/><div class="overlay"><strong class="name">Dante</strong><span class="pill">VIP</span></div></article>
-            <article class="card tilt"><span class="tag">Vegas</span><img src="https://images.unsplash.com/photo-1617137968427-85924c800a4e?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino neón"/><div class="overlay"><strong class="name">Leon</strong><span class="pill">Neón</span></div></article>
-            <article class="card tilt"><span class="tag">Hot</span><img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino fitness"/><div class="overlay"><strong class="name">Marco</strong><span class="pill">Jackpot</span></div></article>
-          </div>
+    <!-- Header con menú sticky -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo"><span>★</span>Show Vegas</a>
+            
+            <!-- Menú Hamburguesa (solo visible en móvil) -->
+            <button class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Menú de navegación -->
+            <ul class="nav-menu">
+                <li><a href="#inicio">INICIO</a></li>
+                <li><a href="#chicas">CHICAS</a></li>
+                <li><a href="#chicos">CHICOS</a></li>
+                <li><a href="#paquetes">PAQUETES</a></li>
+                <li><a href="#reserva" class="reserva-btn">RESERVA YA</a></li>
+            </ul>
         </div>
-        <button class="nav next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m10 6 1.41 1.41L7.83 11H20v2H7.83l3.58 3.59L10 18l-6-6z"/></svg></button>
-        <div class="progress"><span></span></div>
-      </div>
-    </div>
-  </section>
+    </header>
 
-  <section id="chicas">
-    <div class="container">
-      <h3 class="section-title">Chicas</h3>
-      <p class="section-sub">Elegancia, carisma y coreografías que brillan con oro líquido.</p>
-      <div class="carousel" id="slider-chicas">
-        <button class="nav prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
-        <div class="viewport gold-border">
-          <div class="track">
-            <article class="card tilt"><span class="tag">Nuevo</span><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina rojo"/><div class="overlay"><strong class="name">Mía</strong><span class="pill">Rouge</span></div></article>
-            <article class="card tilt"><span class="tag">Top</span><img src="https://images.unsplash.com/photo-1515468381879-40d0ded81016?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina neón"/><div class="overlay"><strong class="name">Vega</strong><span class="pill">VIP</span></div></article>
-            <article class="card tilt"><span class="tag">Vegas</span><img src="https://images.unsplash.com/photo-1503341338981-c128f3b4f0ac?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina sombrero luces"/><div class="overlay"><strong class="name">Noa</strong><span class="pill">Neón</span></div></article>
-            <article class="card tilt"><span class="tag">Hot</span><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina glamour"/><div class="overlay"><strong class="name">Luna</strong><span class="pill">Jackpot</span></div></article>
-          </div>
+    <!-- Sección Hero con Parallax -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">EL MEJOR <span>SHOW DE BAILE</span></h1>
+            <p class="hero-subtitle">Vive una experiencia única con nuestros espectáculos de alto nivel inspirados en los mejores shows de Las Vegas. Disfruta de coreografías impresionantes y una producción de primera.</p>
+            <a href="#reserva" class="hero-btn">Reservar ahora</a>
         </div>
-        <button class="nav next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m10 6 1.41 1.41L7.83 11H20v2H7.83l3.58 3.59L10 18l-6-6z"/></svg></button>
-        <div class="progress"><span></span></div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="paquetes">
-    <div class="container">
-      <h3 class="section-title">Paquetes</h3>
-      <p class="section-sub">Soluciones listas para tu evento: cumpleaños, despedidas y shows privados con vibra Las Vegas.</p>
-      <div class="pricing">
-        <article class="price-card gold-border"><div class="header"><span class="badge">Starter</span><span class="price">$2,999</span></div><ul class="features"><li>1 artista · 30 min</li><li>Playlist temática</li><li>Accesorios básicos</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
-        <article class="price-card gold-border"><div class="header"><span class="badge">Gold</span><span class="price">$5,999</span></div><ul class="features"><li>2 artistas · 45 min</li><li>Coreografía especial</li><li>Iluminación neón</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
-        <article class="price-card gold-border"><div class="header"><span class="badge">Jackpot</span><span class="price">$9,999</span></div><ul class="features"><li>3 artistas · 60 min</li><li>Show temático Las Vegas</li><li>DJ + efectos especiales</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
-      </div>
-    </div>
-  </section>
+    <!-- Sección Galería de Mujeres -->
+    <section id="chicas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galería de Mujeres</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarina profesional">
+                    <div class="gallery-content">
+                        <h3>Espectáculo Femenino</h3>
+                        <p>Nuestras bailarinas te cautivarán con su elegancia, estilo y talento en el escenario.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1543946208-11d486546127?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Coreografía grupal femenina">
+                    <div class="gallery-content">
+                        <h3>Shows en Grupo</h3>
+                        <p>Coreografías sincronizadas que demuestran la coordinación y el talento de nuestras artistas.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511632765481-4a4b2b0e99de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarina acrobática">
+                    <div class="gallery-content">
+                        <h3>Acrobacias Aéreas</h3>
+                        <p>Espectaculares números que combinan baile con acrobacias aéreas para un show único.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <section id="reserva">
-    <div class="container">
-      <h3 class="section-title">¡Reserva Ya!</h3>
-      <p class="section-sub">Dinos fecha, ciudad y tipo de evento. Respondemos con disponibilidad inmediata.</p>
-      <div class="cta-big gold-border">
-        <a class="whatsapp" href="https://wa.me/521234567890?text=Hola%20quiero%20reservar%20un%20show%20Las%20Vegas" target="_blank" rel="noopener">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.84 11.84 0 0 0 12.04 0C5.75 0 .72 5.03.72 11.32c0 2 .53 3.97 1.53 5.7L0 24l7.2-2.2a11.2 11.2 0 0 0 4.84 1.09h.01c6.29 0 11.32-5.03 11.32-11.32 0-3.02-1.17-5.86-3.36-8.05zM12.05 21.1a9.8 9.8 0 0 1-4.98-1.36l-.36-.21-4.28 1.31 1.36-4.16-.23-.43a9.8 9.8 0 1 1 8.49 4.85zm5.7-7.35c-.31-.16-1.83-.9-2.11-1.01-.28-.1-.48-.16-.68.16-.19.31-.78 1.01-.96 1.21-.18.2-.35.23-.66.08-.31-.16-1.29-.48-2.46-1.54-.91-.81-1.53-1.82-1.71-2.12-.18-.31-.02-.48.14-.63.14-.14.31-.36.46-.54.15-.18.2-.31.31-.52.1-.2.05-.39-.03-.55-.08-.16-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5-.17 0-.37-.02-.57-.02-.21 0-.55.08-.84.39-.28.31-1.1 1.08-1.1 2.64 0 1.55 1.13 3.06 1.29 3.27.16.21 2.22 3.39 5.38 4.75.75.32 1.33.51 1.79.66.75.24 1.42.21 1.95.13.6-.09 1.83-.75 2.09-1.47.26-.72.26-1.34.18-1.47-.07-.13-.28-.21-.6-.37z"/></svg>
-          Reservar por WhatsApp
-        </a>
-        <a class="btn" href="#paquetes">Ver Paquetes</a>
-        <a class="btn" href="#inicio">Volver al inicio</a>
-      </div>
-    </div>
-  </section>
+    <!-- Sección Galería de Hombres -->
+    <section id="chicos" style="background-color: #1a1a1a;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galería de Hombres</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Bailarín profesional">
+                    <div class="gallery-content">
+                        <h3>Espectáculo Masculino</h3>
+                        <p>Nuestros bailarines profesionales te sorprenderán con coreografías llenas de energía y estilo.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Coreografía grupal">
+                    <div class="gallery-content">
+                        <h3>Coreografías Grupales</h3>
+                        <p>Shows sincronizados con los mejores movimientos y técnicas de baile profesional.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1537365587684-f4901e4e70e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Bailarín acrobático">
+                    <div class="gallery-content">
+                        <h3>Acrobacias y Destreza</h3>
+                        <p>Movimientos impresionantes que combinan baile y acrobacias para un show inolvidable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <div class="container">AGENCIA DE STRIPPERS H Y M 2026 · HANT PRODUCTIONS 25</div>
-  </footer>
+    <!-- Sección Paquetes -->
+    <section id="paquetes">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Paquetes</h2>
+            </div>
+            <div class="packages-grid">
+                <div class="package-card">
+                    <h3>Básico</h3>
+                    <div class="price"><span>$199</span></div>
+                    <ul>
+                        <li>Show de 1 hora</li>
+                        <li>2 bailarines</li>
+                        <li>Coreografía especial</li>
+                        <li>Música personalizada</li>
+                    </ul>
+                    <a href="#reserva" class="btn">Reservar</a>
+                </div>
+                <div class="package-card">
+                    <h3>Premium</h3>
+                    <div class="price"><span>$399</span></div>
+                    <ul>
+                        <li>Show de 2 horas</li>
+                        <li>4 bailarines</li>
+                        <li>Coreografía exclusiva</li>
+                        <li>Vestuario especial</li>
+                        <li>Efectos de luces</li>
+                    </ul>
+                    <a href="#reserva" class="btn">Reservar</a>
+                </div>
+                <div class="package-card">
+                    <h3>VIP</h3>
+                    <div class="price"><span>$699</span></div>
+                    <ul>
+                        <li>Show de 3 horas</li>
+                        <li>6 bailarines</li>
+                        <li>Coreografía personalizada</li>
+                        <li>Vestuario de lujo</li>
+                        <li>Efectos especiales</li>
+                        <li>Experiencia completa</li>
+                    </ul>
+                    <a href="#reserva" class="btn">Reservar</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <script>
-    // Sticky header
-    const header = document.getElementById('header');
-    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 6);
-    document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+    <!-- Sección Reserva -->
+    <section id="reserva" style="background-color: #1a1a1a;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Reserva Ya</h2>
+            </div>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p style="margin-bottom: 30px; font-size: 1.2rem;">Contáctanos para reservar tu show personalizado. Déjanos tus datos y nos pondremos en contacto contigo a la brevedad.</p>
+                <a href="#" class="hero-btn">Contactar ahora</a>
+            </div>
+        </div>
+    </section>
 
-    // Mobile menu
-    const hamb = document.getElementById('hamb');
-    const mnav = document.getElementById('mnav');
-    const toggleMenu = () => { const open = mnav.classList.toggle('open'); hamb.classList.toggle('active', open); hamb.setAttribute('aria-expanded', String(open)); document.body.style.overflow = open ? 'hidden' : ''; };
-    hamb.addEventListener('click', toggleMenu);
-    mnav.querySelectorAll('.mn-link').forEach(a => a.addEventListener('click', toggleMenu));
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="copyright">
+                <p>HANT PRODUCTIONS <span>2025</span></p>
+            </div>
+        </div>
+    </footer>
 
-    // Shiny hover coords
-    document.querySelectorAll('.btn.gold, .cta').forEach(btn=>{
-      btn.addEventListener('pointermove', e=>{ const r = btn.getBoundingClientRect(); btn.style.setProperty('--x', (e.clientX - r.left)+ 'px'); btn.style.setProperty('--y', (e.clientY - r.top)+ 'px'); });
-    });
+    <script>
+        // Toggle del menú hamburguesa
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const body = document.querySelector('body');
 
-    // Slot reels (2026)
-    const reels = document.querySelectorAll('.digit .reel');
-    function spinReels(){
-      reels.forEach((el)=>{ const target = +el.dataset.target; let seq=''; for(let k=0;k<20;k++){ seq += (k%10) } seq += target; el.textContent = seq; const h = el.parentElement.clientHeight; const total = seq.length; el.style.transform='translateY(0)'; el.style.transition='transform 1.2s cubic-bezier(.2,.7,.2,1)'; requestAnimationFrame(()=>{ el.style.transform = `translateY(${-h*(total-1)}px)`; }); });
-    }
-    window.addEventListener('load', ()=> setTimeout(spinReels, 450));
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // Prevenir el scroll cuando el menú está abierto
+            if (navMenu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = 'auto';
+            }
+        });
 
-    // Reveal on scroll
-    const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target);} }); }, {threshold:.15});
-    document.querySelectorAll('.card, .price-card').forEach(el=> io.observe(el));
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                body.style.overflow = 'auto';
+            });
+        });
 
-    // Parallax
-    const group = document.getElementById('parallax');
-    function parallax(e){ const r = group.getBoundingClientRect(); const cx = r.left + r.width/2; const cy = r.top + r.height/2; const dx = (e.clientX - cx)/r.width; const dy = (e.clientY - cy)/r.height; group.querySelectorAll('[data-depth]').forEach(el=>{ const d = (+el.dataset.depth||0)/100; el.style.transform = `translate3d(${dx*-12*d}px, ${dy*-18*d}px, 0)`; }); }
-    window.addEventListener('pointermove', parallax);
+        // Efecto de cambio de header al hacer scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+                header.style.padding = '10px 0';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+                header.style.padding = '15px 0';
+            }
+        });
 
-    // Sparkles canvas
-    const cvs = document.getElementById('sparkles'); const ctx = cvs.getContext('2d'); let W,H,particles=[]; const N=140;
-    function resize(){ W = cvs.width = innerWidth * devicePixelRatio; H = cvs.height = innerHeight * devicePixelRatio; }
-    resize(); addEventListener('resize', resize);
-    function rnd(a,b){ return a + Math.random()*(b-a); }
-    function spawn(){ particles = Array.from({length:N},()=>({ x:rnd(0,W), y:rnd(0,H), r:rnd(0.6,2.2)*devicePixelRatio, a:rnd(.25,.8), vx:rnd(-.05,.05)*devicePixelRatio, vy:rnd(.15,.45)*devicePixelRatio })); }
-    spawn();
-    function tick(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.y>H) { p.y = -10; p.x=rnd(0,W);} const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4); g.addColorStop(0, `rgba(255,239,170,${p.a})`); g.addColorStop(1, 'rgba(255,239,170,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(tick); }
-    tick();
+        // Efecto de polvo dorado al hacer clic
+        document.addEventListener('click', (e) => {
+            const goldDust = document.createElement('div');
+            goldDust.classList.add('gold-dust');
+            
+            // Posicionar el efecto donde se hizo clic
+            goldDust.style.left = `${e.pageX - 10}px`;
+            goldDust.style.top = `${e.pageY - 10}px`;
+            
+            // Valores aleatorios para la animación
+            const tx = (Math.random() - 0.5) * 100;
+            const ty = (Math.random() - 0.5) * 100;
+            goldDust.style.setProperty('--tx', `${tx}px`);
+            goldDust.style.setProperty('--ty', `${ty}px`);
+            
+            document.body.appendChild(goldDust);
+            
+            // Eliminar el elemento después de la animación
+            setTimeout(() => {
+                goldDust.remove();
+            }, 1000);
+        });
 
-    // Carousels
-    function makeSlider(rootSel){
-      const root = document.querySelector(rootSel); if(!root) return;
-      const viewport = root.querySelector('.viewport');
-      const track = root.querySelector('.track');
-      const prev = root.querySelector('.nav.prev');
-      const next = root.querySelector('.nav.next');
-      const bar = root.querySelector('.progress span');
-      const cards = [...track.querySelectorAll('.card')];
+        // Efecto de revelado suave al hacer scroll
+        const revealElements = document.querySelectorAll('.gallery-item, .package-card, .section-title');
+        
+        function checkReveal() {
+            const windowHeight = window.innerHeight;
+            
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = 1;
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+        
+        // Inicializar estilos para la animación
+        revealElements.forEach(element => {
+            element.style.opacity = 0;
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        });
+        
+        window.addEventListener('scroll', checkReveal);
+        window.addEventListener('load', checkReveal);
 
-      function setActive(){ const c = viewport.getBoundingClientRect().left + viewport.clientWidth/2; let nearest=null, mind=1e9; cards.forEach(card=>{ const r = card.getBoundingClientRect(); const d = Math.abs(r.left + r.width/2 - c); if(d<mind){ mind=d; nearest=card; } }); cards.forEach(el=> el.classList.toggle('active', el===nearest)); }
-      function setProgress(){ const max = track.scrollWidth - viewport.clientWidth; const p = max>0 ? viewport.scrollLeft / max : 0; bar.style.width = Math.max(8, (p*100)) + '%'; }
-      const step = (dir=1)=>{ const w = cards[0].getBoundingClientRect().width; viewport.scrollBy({left: dir*(w+14), behavior:'smooth'}); };
-      prev.addEventListener('click', ()=> step(-1)); next.addEventListener('click', ()=> step(1));
-
-      let isDown=false, startX=0, startLeft=0;
-      viewport.addEventListener('pointerdown', e=>{ isDown=true; startX=e.clientX; startLeft=viewport.scrollLeft; viewport.setPointerCapture(e.pointerId); });
-      viewport.addEventListener('pointermove', e=>{ if(!isDown) return; viewport.scrollLeft = startLeft - (e.clientX - startX); });
-      ['pointerup','pointercancel','mouseleave'].forEach(ev=> viewport.addEventListener(ev, ()=> isDown=false));
-
-      viewport.addEventListener('wheel', e=>{ if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){ e.preventDefault(); viewport.scrollLeft += e.deltaY; } }, {passive:false});
-      viewport.addEventListener('scroll', ()=>{ setActive(); setProgress(); }, {passive:true});
-      window.addEventListener('resize', ()=>{ setActive(); setProgress(); });
-      setActive(); setProgress();
-
-      let auto = setInterval(()=> step(1), 4500);
-      root.addEventListener('mouseenter', ()=> clearInterval(auto));
-      root.addEventListener('mouseleave', ()=> auto = setInterval(()=> step(1), 4500));
-    }
-    makeSlider('#slider-chicos');
-    makeSlider('#slider-chicas');
-  </script>
+        // Efecto parallax para el hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                const rate = scrolled * -0.5;
+                heroBg.style.transform = `translate3d(0px, ${rate}px, 0px) scale(1.2)`;
+            }
+        });
+    </script>
 </body>
 </html>
