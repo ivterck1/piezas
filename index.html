@@ -106,7 +106,7 @@
             overflow: hidden;
         }
 
-        /* Efecto 6: Luz de focos */
+        /* Efecto 1: Luz de focos */
         .spotlight-demo {
             position: absolute;
             top: 0;
@@ -134,7 +134,7 @@
             padding: 20px;
         }
 
-        /* Efecto 7: Recorte de texto con video */
+        /* Efecto 2: Recorte de texto con video */
         .text-video-demo {
             width: 100%;
             height: 100%;
@@ -161,7 +161,7 @@
             100% { transform: scale(1.1); }
         }
 
-        /* Efecto 8: Efecto de cortina de teatro */
+        /* Efecto 3: Efecto de cortina de teatro */
         .curtain-demo {
             position: absolute;
             top: 0;
@@ -190,11 +190,11 @@
             border-left: 2px solid var(--oro);
         }
 
-        .example-card:hover .curtain-left {
+        .example-card.curtain-card:hover .curtain-left {
             transform: translateX(0);
         }
 
-        .example-card:hover .curtain-right {
+        .example-card.curtain-card:hover .curtain-right {
             transform: translateX(0);
         }
 
@@ -212,7 +212,7 @@
             text-shadow: 0 0 10px var(--negro);
         }
 
-        /* Efecto 9: Efecto de humo/niebla */
+        /* Efecto 4: Efecto de humo/niebla */
         .smoke-demo {
             position: absolute;
             top: 0;
@@ -252,7 +252,7 @@
             text-shadow: 0 0 15px var(--rojo);
         }
 
-        /* Efecto 10: Efecto de tarjeta dorada giratoria */
+        /* Efecto 5: Efecto de tarjeta dorada giratoria */
         .card-flip-demo {
             width: 100%;
             height: 100%;
@@ -267,7 +267,7 @@
             transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
         }
 
-        .example-card:hover .flip-card {
+        .example-card.flip-card-container:hover .flip-card {
             transform: rotateY(180deg);
         }
 
@@ -378,6 +378,10 @@
             .subtitle {
                 font-size: 1.1rem;
             }
+            
+            .video-text {
+                font-size: 32px;
+            }
         }
     </style>
 </head>
@@ -389,8 +393,8 @@
 
     <div class="container">
         <div class="examples-grid">
-            <!-- Efecto 6: Luz de focos -->
-            <div class="example-card" onclick="showCode(6)">
+            <!-- Efecto 1: Luz de focos -->
+            <div class="example-card" onclick="showCode(1)">
                 <div class="example-header">Efecto de Focos de Teatro</div>
                 <div class="example-content">
                     <div class="spotlight-demo"></div>
@@ -398,8 +402,8 @@
                 </div>
             </div>
 
-            <!-- Efecto 7: Recorte de texto con video -->
-            <div class="example-card" onclick="showCode(7)">
+            <!-- Efecto 2: Recorte de texto con video -->
+            <div class="example-card" onclick="showCode(2)">
                 <div class="example-header">Texto con Efecto de Video</div>
                 <div class="example-content">
                     <div class="text-video-demo">
@@ -408,8 +412,8 @@
                 </div>
             </div>
 
-            <!-- Efecto 8: Efecto de cortina de teatro -->
-            <div class="example-card" onclick="showCode(8)">
+            <!-- Efecto 3: Efecto de cortina de teatro -->
+            <div class="example-card curtain-card" onclick="showCode(3)">
                 <div class="example-header">Cortina de Teatro</div>
                 <div class="example-content">
                     <div class="curtain-demo">
@@ -420,8 +424,8 @@
                 </div>
             </div>
 
-            <!-- Efecto 9: Efecto de humo/niebla -->
-            <div class="example-card" onclick="showCode(9)">
+            <!-- Efecto 4: Efecto de humo/niebla -->
+            <div class="example-card" onclick="showCode(4)">
                 <div class="example-header">Efecto de Humo Escénico</div>
                 <div class="example-content">
                     <div class="smoke-demo">
@@ -431,8 +435,8 @@
                 </div>
             </div>
 
-            <!-- Efecto 10: Efecto de tarjeta dorada giratoria -->
-            <div class="example-card" onclick="showCode(10)">
+            <!-- Efecto 5: Efecto de tarjeta dorada giratoria -->
+            <div class="example-card flip-card-container" onclick="showCode(5)">
                 <div class="example-header">Tarjeta Giratoria Dorada</div>
                 <div class="example-content">
                     <div class="card-flip-demo">
@@ -467,7 +471,7 @@
             let code = '';
             
             switch(effectNumber) {
-                case 6:
+                case 1:
                     code = `<span class="comment">// Efecto de focos de teatro</span>
 <span class="selector">.spotlight-hero</span> {
     <span class="property">position</span>: <span class="value">relative</span>;
@@ -490,7 +494,7 @@
     <span class="property">text-shadow</span>: <span class="value">0 0 15px var(--oro)</span>;
 }`;
                     break;
-                case 7:
+                case 2:
                     code = `<span class="comment">// Texto con efecto de video</span>
 <span class="selector">.video-text-hero</span> {
     <span class="property">font-size</span>: <span class="value">5rem</span>;
@@ -511,7 +515,7 @@
 <span class="comment">&lt;!-- HTML --></span>
 &lt;div class="video-text-hero">SHOW VEGAS&lt;/div>`;
                     break;
-                case 8:
+                case 3:
                     code = `<span class="comment">// Efecto de cortina de teatro</span>
 <span class="selector">.curtain-effect</span> {
     <span class="property">position</span>: <span class="value">relative</span>;
@@ -554,7 +558,7 @@
     }, 1000);
 });`;
                     break;
-                case 9:
+                case 4:
                     code = `<span class="comment">// Efecto de humo escénico</span>
 <span class="selector">.smoke-effect</span> {
     <span class="property">position</span>: <span class="value">relative</span>;
@@ -585,7 +589,7 @@
     <span class="property">z-index</span>: <span class="value">2</span>;
 }`;
                     break;
-                case 10:
+                case 5:
                     code = `<span class="comment">// Efecto de tarjeta giratoria</span>
 <span class="selector">.flip-card-hero</span> {
     <span class="property">perspective</span>: <span class="value">1000px</span>;
@@ -647,9 +651,20 @@
         function initDemos() {
             // Efecto de cortina se abre automáticamente después de un tiempo
             setTimeout(() => {
-                document.querySelector('.curtain-left').style.transform = 'translateX(0)';
-                document.querySelector('.curtain-right').style.transform = 'translateX(0)';
-            }, 800);
+                const curtainLeft = document.querySelector('.curtain-left');
+                const curtainRight = document.querySelector('.curtain-right');
+                
+                if (curtainLeft && curtainRight) {
+                    curtainLeft.style.transform = 'translateX(0)';
+                    curtainRight.style.transform = 'translateX(0)';
+                    
+                    // Cerrar después de 3 segundos
+                    setTimeout(() => {
+                        curtainLeft.style.transform = 'translateX(-100%)';
+                        curtainRight.style.transform = 'translateX(100%)';
+                    }, 3000);
+                }
+            }, 1000);
         }
 
         // Iniciar cuando el documento esté cargado
