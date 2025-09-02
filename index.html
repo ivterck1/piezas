@@ -1,674 +1,351 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Efectos Hero Dinámicos - Show Vegas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --rojo: #d92626;
-            --negro: #000000;
-            --blanco: #ffffff;
-            --oro: #ffd700;
-            --gris-oscuro: #1a1a1a;
-            --degradado-oro: linear-gradient(145deg, #ffd700, #daa520, #b8860b);
-            --degradado-elegante: linear-gradient(135deg, rgba(217,38,38,0.8), rgba(0,0,0,0.7), rgba(255,215,0,0.6));
-        }
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H y M · Las Vegas 2026 — Shiny Slider Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Cinzel:wght@600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --gold:#ffd76a; --gold-2:#fff0b3; --gold-3:#b98a2a; --gold-deep:#8a6a1c; --gold-shadow:rgba(212,175,55,.45);
+      --red:#c2102e; --black:#070709; --ink:#0e0f13; --white:#fff; --muted:#161821; --container:min(1240px,92vw);
+      --card-glow:0 10px 40px rgba(255,215,106,.18), 0 0 0 1px rgba(255,255,255,.04) inset;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:radial-gradient(130% 120% at 50% -10%, #1b1e29 0%, #0a0b0f 55%, #030307 100%);color:var(--white);font-family:Montserrat,system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .container{width:var(--container);margin:auto}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
+    .gold-text{background:linear-gradient(180deg,var(--gold),var(--gold-3));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 10px 30px rgba(255,215,106,.25)}
+    .gold-border{position:relative}
+    .gold-border:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,var(--gold-2),var(--gold),var(--gold-deep));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 
-        body {
-            background-color: var(--negro);
-            color: var(--blanco);
-            overflow-x: hidden;
-        }
+    #sparkles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6}
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
+    header{position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);transition:all .35s ease}
+    header .wrap{width:var(--container);margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    header .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;aspect-ratio:1;border-radius:12px;background:radial-gradient(140% 140% at 0% 0%, var(--gold-2),var(--gold)),radial-gradient(100% 120% at 100% 100%, rgba(255,255,255,.25), transparent 60%);box-shadow:inset 0 0 20px rgba(255,255,255,.35),0 0 0 2px var(--gold-3),0 10px 28px var(--gold-shadow);position:relative;overflow:hidden}
+    .logo:after{content:"";position:absolute;inset:-120%;background:conic-gradient(from 0deg,transparent 0 25%,rgba(255,255,255,.5) 27% 33%,transparent 35% 100%);animation:spin 6s linear infinite}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    header h1{font-family:Cinzel,serif;font-size:clamp(16px,2.6vw,28px);letter-spacing:.6px;margin:0}
+    header.scrolled{background:rgba(3,4,8,.65);box-shadow:0 12px 28px rgba(0,0,0,.45)}
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    nav.desktop{display:flex;align-items:center;gap:6px}
+    nav.desktop a{position:relative;padding:14px 16px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+    nav.desktop a:after{content:"";position:absolute;left:16px;right:16px;bottom:6px;height:3px;border-radius:3px;opacity:0;transform:translateY(6px);background:radial-gradient(8px 8px at 0% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 25% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 50% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 75% 50%,var(--gold-2),transparent 60%),radial-gradient(8px 8px at 100% 50%,var(--gold-2),transparent 60%);filter:drop-shadow(0 0 8px var(--gold));transition:opacity .25s,transform .25s;animation:fairy 2s linear infinite}
+    @keyframes fairy{0%{background-position:0 0}100%{background-position:160px 0}}
+    nav.desktop a:hover:after{opacity:1;transform:translateY(0)}
 
-        header {
-            text-align: center;
-            padding: 30px 0;
-            background: var(--gris-oscuro);
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--oro);
-        }
+    .cta{margin-left:8px;padding:12px 18px;border-radius:999px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--gold-3);background:linear-gradient(135deg,#382800,#7e5b0a,#f9e071);color:#1a1200;box-shadow:0 0 0 2px rgba(0,0,0,.25),0 14px 34px var(--gold-shadow);position:relative;overflow:hidden}
+    .cta .shine{position:absolute;inset:-20%;background:conic-gradient(from 220deg,transparent 0 65%, rgba(255,255,255,.65) 70% 72%, transparent 77% 100%);animation:liquid 2.8s ease-in-out infinite}
+    @keyframes liquid{0%{transform:translateX(-60%) rotate(0)}60%{transform:translateX(60%) rotate(10deg)}100%{transform:translateX(120%) rotate(0)}}
 
-        h1 {
-            font-size: 2.8rem;
-            color: var(--oro);
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+    .hamb{width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.12);display:none;place-items:center;cursor:pointer;transition:transform .35s}
+    .hamb:hover{transform:translateY(-1px)}
+    .hamb .lines{width:24px;height:16px;position:relative}
+    .hamb .lines span{position:absolute;left:0;right:0;height:2px;background:var(--white);border-radius:2px;transition:transform .35s,opacity .35s}
+    .hamb .lines span:nth-child(1){top:0}
+    .hamb .lines span:nth-child(2){top:7px}
+    .hamb .lines span:nth-child(3){top:14px}
+    .hamb.active{transform:rotate(180deg)}
+    .hamb.active .lines span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamb.active .lines span:nth-child(2){opacity:0}
+    .hamb.active .lines span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-        .subtitle {
-            font-size: 1.3rem;
-            color: var(--blanco);
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    .mnav{position:fixed;inset:0;background:rgba(5,6,10,.78);backdrop-filter:blur(8px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .35s;z-index:40}
+    .mnav.open{opacity:1;pointer-events:auto}
+    .mnav .panel{width:min(560px,90vw);border-radius:28px;padding:28px;background:radial-gradient(120% 120% at 0% 0%, rgba(255,215,106,.18), rgba(255,255,255,.02));border:1px solid rgba(255,215,106,.25);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+    .mnav .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mnav a{display:grid;place-items:center;padding:20px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);text-transform:uppercase;font-weight:900;letter-spacing:.8px;position:relative;overflow:hidden;transform:translateY(8px);opacity:0}
+    .mnav.open a{animation:stagger .4s .1s forwards}
+    .mnav.open a:nth-child(2){animation-delay:.18s}
+    .mnav.open a:nth-child(3){animation-delay:.26s}
+    .mnav.open a:nth-child(4){animation-delay:.34s}
+    .mnav.open a:nth-child(5){animation-delay:.42s}
+    @keyframes stagger{to{transform:translateY(0);opacity:1}}
+    .mnav a.mn-cta{grid-column:1/-1;background:linear-gradient(135deg,#2a2000,#8d6b12,#ffe58f);color:#1a1200;border:1px solid var(--gold-3);box-shadow:0 12px 32px var(--gold-shadow)}
 
-        .examples-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
+    .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
+    .hero .layer.city{position:absolute;inset:0;background:linear-gradient(to top, rgba(3,3,4,.92) 0 35%, rgba(3,3,4,.6) 60%, rgba(3,3,4,.2) 100%), url('https://images.unsplash.com/photo-1544470350-47edb9a37d10?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;filter:saturate(1.05) contrast(1.05);transform:scale(1.03)}
+    .hero .layer.aurora{position:absolute;inset:-30% -20%;background:conic-gradient(from 0deg at 50% 110%, rgba(255,255,255,.15), transparent 30% 70%, rgba(255,255,255,.15));mix-blend-mode:screen;filter:blur(16px);animation:sweep 12s ease-in-out infinite}
+    .hero .layer.aurora:after{content:"";position:absolute;inset:0;background:conic-gradient(from 180deg at 50% 110%, rgba(255,255,255,.12), transparent 40% 80%, rgba(255,255,255,.12));animation:sweep 14s ease-in-out infinite}
+    @keyframes sweep{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
 
-        .example-card {
-            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            cursor: pointer;
-            height: 320px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
+    .hero .group{position:relative;transform-style:preserve-3d;perspective:1000px;z-index:1}
+    .hero .badge{display:inline-block;padding:8px 12px;border-radius:999px;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-size:12px;color:#1b1200;background:linear-gradient(90deg,var(--gold-2),var(--gold));border:1px solid var(--gold-3);box-shadow:0 10px 24px var(--gold-shadow)}
+    .hero h2{font-family:Cinzel,serif;font-weight:900;font-size:clamp(32px,7.6vw,86px);line-height:1.02;text-align:center;margin:18px 0 10px;text-shadow:0 10px 40px rgba(0,0,0,.6)}
 
-        .example-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2);
-        }
+    .slot{display:inline-grid;grid-auto-flow:column;gap:8px;margin:18px 0 28px;padding:8px;border-radius:18px;background:linear-gradient(180deg,#0c0d11,#191b24);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 -8px 16px rgba(0,0,0,.6),0 12px 28px rgba(0,0,0,.45)}
+    .digit{width:min(18vw,88px);height:min(18vw,88px);border-radius:14px;display:grid;place-items:center;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));border:1px solid var(--gold-3);box-shadow:inset 0 0 16px rgba(255,255,255,.35),0 10px 22px var(--gold-shadow);overflow:hidden;position:relative}
+    .digit:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 40%,transparent 60%,rgba(0,0,0,.25));mix-blend-mode:soft-light}
+    .digit .reel{will-change:transform;display:inline-block;white-space:pre;font-weight:900;font-size:clamp(28px,6.4vw,56px);color:#1b1200}
 
-        .example-header {
-            background: var(--degradado-oro);
-            padding: 18px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--negro);
-            font-size: 1.2rem;
-        }
+    .hero .cta-row,.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:14px 22px;border-radius:999px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06)}
+    .btn:hover{background:rgba(255,255,255,.12)}
+    .btn.gold{border-color:var(--gold-3);background:linear-gradient(135deg,#2a1f00,#f6dc7f);color:#1b1200;position:relative;overflow:hidden}
+    .btn.gold:after{content:"";position:absolute;inset:0;background:radial-gradient(220px 220px at var(--x,0) var(--y,0),rgba(255,255,255,.45),transparent 40%);opacity:0;transition:opacity .25s}
+    .btn.gold:hover:after{opacity:1}
+    .scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:12px;letter-spacing:1px;opacity:.75}
 
-        .example-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
+    section{position:relative;padding:clamp(60px,8vw,110px) 0;z-index:1}
+    .section-title{font-family:Cinzel,serif;font-size:clamp(24px,4.8vw,44px);margin:0 0 16px}
+    .section-sub{opacity:.85;max-width:900px}
 
-        /* Efecto 1: Luz de focos */
-        .spotlight-demo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.2), transparent 30%),
-                        radial-gradient(circle at 70% 60%, rgba(217,38,38,0.2), transparent 30%),
-                        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1), transparent 30%);
-            animation: spotMovement 8s infinite alternate;
-        }
+    .card{position:relative;border-radius:18px;overflow:hidden;background:#0f1118;border:1px solid rgba(255,255,255,.08);box-shadow:var(--card-glow);aspect-ratio:3/4;transform:translateY(24px);opacity:0;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
+    .card.revealed{transform:translateY(0);opacity:1}
+    .card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.05)}
+    .card .tag{position:absolute;left:12px;top:12px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(4px);font-size:12px;font-weight:800;text-transform:uppercase}
+    .card .overlay{position:absolute;inset:auto 0 0 0;padding:14px;background:linear-gradient(to top, rgba(0,0,0,.86), transparent 70%);display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .name{font-weight:900;letter-spacing:.5px}
+    .pill{padding:8px 12px;border-radius:999px;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;font-weight:900;border:1px solid var(--gold-3);box-shadow:0 6px 18px var(--gold-shadow)}
+    .tilt{transform-style:preserve-3d}
+    .tilt:hover{transform:perspective(800px) rotateX(4deg) rotateY(-4deg)}
 
-        @keyframes spotMovement {
-            0% { background-position: 30% 30%, 70% 60%, 40% 80%; }
-            100% { background-position: 60% 60%, 30% 30%, 80% 40%; }
-        }
+    /* === Carousel shiny === */
+    .carousel{position:relative}
+    .carousel .viewport{position:relative;overflow:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:8px 4px 18px;mask-image:linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%)}
+    .carousel .track{display:flex;gap:14px}
+    .carousel .track .card{min-width:72vw;scroll-snap-align:center;transition:transform .35s ease, box-shadow .35s ease, filter .35s ease}
+    @media(min-width:680px){.carousel .track .card{min-width:40vw}}
+    @media(min-width:1024px){.carousel .track .card{min-width:26vw}}
+    .carousel .track .card.active{transform:scale(1.04);box-shadow:0 16px 60px rgba(255,215,106,.20), var(--card-glow);filter:saturate(1.12)}
+    .carousel .viewport:before,.carousel .viewport:after{content:"";position:absolute;top:0;bottom:0;width:70px;pointer-events:none;z-index:2}
+    .carousel .viewport:before{left:0;background:linear-gradient(90deg, rgba(3,4,8,1), rgba(3,4,8,0))}
+    .carousel .viewport:after{right:0;background:linear-gradient(270deg, rgba(3,4,8,1), rgba(3,4,8,0))}
+    .carousel .nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;border:0;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1a1200;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;box-shadow:0 10px 24px var(--gold-shadow);cursor:pointer}
+    .carousel .nav.prev{left:6px}
+    .carousel .nav.next{right:6px}
+    .carousel .nav svg{width:20px;height:20px}
+    .carousel .progress{height:4px;border-radius:999px;background:rgba(255,255,255,.08);margin:8px auto 0;position:relative;overflow:hidden}
+    .carousel .progress span{position:absolute;left:0;top:0;bottom:0;width:20%;background:linear-gradient(90deg,var(--gold-2),var(--gold));box-shadow:0 6px 16px var(--gold-shadow)}
 
-        .spotlight-text {
-            color: var(--blanco);
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 0 0 15px var(--oro);
-            z-index: 2;
-            text-align: center;
-            padding: 20px;
-        }
+    #paquetes{background:radial-gradient(120% 120% at 0% 0%, rgba(255,215,106,.09), transparent 60%)}
+    .pricing{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .price-card{grid-column:span 4;border-radius:24px;padding:24px;background:linear-gradient(180deg,#14161f,#0b0d14);border:1px solid rgba(255,255,255,.08);box-shadow:var(--card-glow);position:relative;overflow:hidden;transform:translateY(24px);opacity:0;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
+    .price-card.revealed{transform:translateY(0);opacity:1}
+    .price-card .header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .badge{padding:8px 10px;border-radius:12px;border:1px solid var(--gold-3);background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;font-weight:900;text-transform:uppercase;letter-spacing:.8px}
+    .price{font-size:clamp(22px,4vw,36px);font-weight:900}
+    .features{margin:12px 0 18px;opacity:.9}
+    .features li{margin:10px 0}
 
-        /* Efecto 2: Recorte de texto con video */
-        .text-video-demo {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    #reserva{background:radial-gradient(120% 120% at 100% 0%, rgba(255,215,106,.12), transparent 60%);border-top:1px solid rgba(255,215,106,.18)}
+    .cta-big{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;padding:18px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);box-shadow:var(--card-glow)}
+    .cta-big .whatsapp{display:inline-flex;align-items:center;gap:10px;padding:16px 22px;border-radius:999px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;background:radial-gradient(140% 140% at 0% 0%,var(--gold-2),var(--gold));color:#1b1200;border:1px solid var(--gold-3);box-shadow:0 14px 34px var(--gold-shadow)}
 
-        .video-text {
-            font-size: 42px;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: url('https://images.unsplash.com/photo-1511632765481-4a4b2b0e99de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') center/cover;
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            text-align: center;
-            line-height: 1.2;
-            animation: textZoom 10s infinite alternate;
-        }
+    footer{padding:34px 0 60px;border-top:1px solid rgba(255,255,255,.1);opacity:.82;text-align:center}
 
-        @keyframes textZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        /* Efecto 3: Efecto de cortina de teatro */
-        .curtain-demo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .curtain-left, .curtain-right {
-            height: 100%;
-            width: 50%;
-            background: linear-gradient(to right, var(--rojo), #8b0000);
-            position: relative;
-            transition: transform 1.5s ease;
-        }
-
-        .curtain-left {
-            transform: translateX(-100%);
-            border-right: 2px solid var(--oro);
-        }
-
-        .curtain-right {
-            transform: translateX(100%);
-            border-left: 2px solid var(--oro);
-        }
-
-        .example-card.curtain-card:hover .curtain-left {
-            transform: translateX(0);
-        }
-
-        .example-card.curtain-card:hover .curtain-right {
-            transform: translateX(0);
-        }
-
-        .curtain-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--blanco);
-            font-size: 24px;
-            font-weight: bold;
-            z-index: 5;
-            text-align: center;
-            width: 100%;
-            text-shadow: 0 0 10px var(--negro);
-        }
-
-        /* Efecto 4: Efecto de humo/niebla */
-        .smoke-demo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
-            overflow: hidden;
-        }
-
-        .smoke {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="rgba(255,215,0,0.1)" d="M0,0 C20,40 50,30 100,0 L100,100 L0,100 Z"/></svg>') bottom no-repeat;
-            background-size: 100% 50%;
-            animation: smokeAnimation 15s infinite alternate;
-        }
-
-        @keyframes smokeAnimation {
-            0% { transform: translateY(0) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-20px) scale(1.1); opacity: 0.5; }
-            100% { transform: translateY(0) scale(1); opacity: 0.3; }
-        }
-
-        .smoke-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--blanco);
-            font-size: 28px;
-            font-weight: bold;
-            text-align: center;
-            z-index: 2;
-            text-shadow: 0 0 15px var(--rojo);
-        }
-
-        /* Efecto 5: Efecto de tarjeta dorada giratoria */
-        .card-flip-demo {
-            width: 100%;
-            height: 100%;
-            perspective: 1000px;
-        }
-
-        .flip-card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
-        }
-
-        .example-card.flip-card-container:hover .flip-card {
-            transform: rotateY(180deg);
-        }
-
-        .flip-front, .flip-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .flip-front {
-            background: linear-gradient(45deg, var(--negro), var(--gris-oscuro));
-            color: var(--blanco);
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .flip-back {
-            background: var(--degradado-oro);
-            color: var(--negro);
-            transform: rotateY(180deg);
-            font-size: 20px;
-            flex-direction: column;
-        }
-
-        .flip-back i {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .code-container {
-            background: #1e1e1e;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 40px;
-            overflow-x: auto;
-            border: 1px solid var(--oro);
-        }
-
-        .code-container h3 {
-            color: var(--oro);
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-
-        pre {
-            color: #d4d4d4;
-            font-family: 'Courier New', monospace;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-
-        .comment { color: #6a9955; }
-        .selector { color: #d7ba7d; }
-        .property { color: #9cdcfe; }
-        .value { color: #ce9178; }
-
-        .try-button {
-            display: block;
-            width: 220px;
-            margin: 40px auto;
-            padding: 16px;
-            background: var(--rojo);
-            color: var(--blanco);
-            text-align: center;
-            border-radius: 30px;
-            font-weight: bold;
-            text-decoration: none;
-            animation: parpadeo 2s infinite;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-            border: none;
-            cursor: pointer;
-        }
-
-        .try-button:hover {
-            background: var(--oro);
-            color: var(--negro);
-            transform: scale(1.05);
-        }
-
-        @keyframes parpadeo {
-            0% { box-shadow: 0 0 10px var(--rojo); }
-            50% { box-shadow: 0 0 20px var(--rojo), 0 0 30px var(--rojo); }
-            100% { box-shadow: 0 0 10px var(--rojo); }
-        }
-
-        @media (max-width: 768px) {
-            .examples-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .example-card {
-                height: 280px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .video-text {
-                font-size: 32px;
-            }
-        }
-    </style>
+    @media (max-width: 980px){
+      nav.desktop{display:none}
+      .hamb{display:grid}
+      .pricing{grid-template-columns:1fr}
+      .price-card{grid-column:1/-1}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .logo:after,.hero .layer.aurora,.cta .shine{animation:none}
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Efectos Dinámicos para Sección Hero</h1>
-        <p class="subtitle">Más ideas innovadoras para tu show de bailarines con estilo Las Vegas</p>
-    </header>
+  <canvas id="sparkles"></canvas>
 
-    <div class="container">
-        <div class="examples-grid">
-            <!-- Efecto 1: Luz de focos -->
-            <div class="example-card" onclick="showCode(1)">
-                <div class="example-header">Efecto de Focos de Teatro</div>
-                <div class="example-content">
-                    <div class="spotlight-demo"></div>
-                    <div class="spotlight-text">Show en vivo<br>Bailarines profesionales</div>
-                </div>
-            </div>
-
-            <!-- Efecto 2: Recorte de texto con video -->
-            <div class="example-card" onclick="showCode(2)">
-                <div class="example-header">Texto con Efecto de Video</div>
-                <div class="example-content">
-                    <div class="text-video-demo">
-                        <div class="video-text">SHOW<br>VEGAS</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Efecto 3: Efecto de cortina de teatro -->
-            <div class="example-card curtain-card" onclick="showCode(3)">
-                <div class="example-header">Cortina de Teatro</div>
-                <div class="example-content">
-                    <div class="curtain-demo">
-                        <div class="curtain-left"></div>
-                        <div class="curtain-right"></div>
-                        <div class="curtain-text">El espectáculo está por comenzar</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Efecto 4: Efecto de humo/niebla -->
-            <div class="example-card" onclick="showCode(4)">
-                <div class="example-header">Efecto de Humo Escénico</div>
-                <div class="example-content">
-                    <div class="smoke-demo">
-                        <div class="smoke"></div>
-                        <div class="smoke-text">Experiencia<br>Irreal</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Efecto 5: Efecto de tarjeta dorada giratoria -->
-            <div class="example-card flip-card-container" onclick="showCode(5)">
-                <div class="example-header">Tarjeta Giratoria Dorada</div>
-                <div class="example-content">
-                    <div class="card-flip-demo">
-                        <div class="flip-card">
-                            <div class="flip-front">
-                                <div>Pasa el cursor para descubrir</div>
-                            </div>
-                            <div class="flip-back">
-                                <i class="fas fa-ticket-alt"></i>
-                                <div>Reserva tus entradas ahora</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <button class="try-button" onclick="alert('¡Efecto seleccionado! Puedes implementarlo en tu sitio.')">Probar en mi sitio</button>
-
-        <div class="code-container">
-            <h3>Código de Implementación</h3>
-            <pre id="code-display">
-<span class="comment">// Selecciona un efecto para ver el código de implementación</span>
-            </pre>
-        </div>
+  <header id="header">
+    <div class="wrap">
+      <a href="#inicio" class="brand" aria-label="Inicio"><div class="logo" aria-hidden="true"></div><h1><span class="gold-text">H y M</span> — Las Vegas</h1></a>
+      <nav class="desktop" aria-label="Principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#chicos">Chicos</a>
+        <a href="#chicas">Chicas</a>
+        <a href="#paquetes">Paquetes</a>
+        <a href="#reserva" class="cta gold-border"><span class="shine"></span>¡Reserva Ya!</a>
+      </nav>
+      <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><div class="lines"><span></span><span></span><span></span></div></button>
     </div>
+  </header>
 
-    <script>
-        // Mostrar código según el efecto seleccionado
-        function showCode(effectNumber) {
-            const codeDisplay = document.getElementById('code-display');
-            let code = '';
-            
-            switch(effectNumber) {
-                case 1:
-                    code = `<span class="comment">// Efecto de focos de teatro</span>
-<span class="selector">.spotlight-hero</span> {
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">height</span>: <span class="value">100vh</span>;
-    <span class="property">overflow</span>: <span class="value">hidden</span>;
-    <span class="property">background</span>: <span class="value">radial-gradient(circle at 30% 30%, rgba(255,215,0,0.2), transparent 30%),
-                radial-gradient(circle at 70% 60%, rgba(217,38,38,0.2), transparent 30%),
-                radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1), transparent 30%)</span>;
-    <span class="property">animation</span>: <span class="value">spotMovement 8s infinite alternate</span>;
-}
+  <div class="mnav" id="mnav" role="dialog" aria-modal="true">
+    <div class="panel gold-border">
+      <div class="grid">
+        <a class="mn-link" href="#inicio">Inicio</a>
+        <a class="mn-link" href="#chicos">Chicos</a>
+        <a class="mn-link" href="#chicas">Chicas</a>
+        <a class="mn-link" href="#paquetes">Paquetes</a>
+        <a class="mn-link mn-cta" href="#reserva">¡Reserva Ya!</a>
+      </div>
+    </div>
+  </div>
 
-<span class="selector">@keyframes spotMovement</span> {
-    <span class="value">0%</span> { <span class="property">background-position</span>: <span class="value">30% 30%, 70% 60%, 40% 80%</span>; }
-    <span class="value">100%</span> { <span class="property">background-position</span>: <span class="value">60% 60%, 30% 30%, 80% 40%</span>; }
-}
+  <section class="hero" id="inicio">
+    <div class="layer city" aria-hidden="true"></div>
+    <div class="layer aurora" aria-hidden="true"></div>
+    <div class="group container" id="parallax">
+      <span class="badge" data-depth="40">Temporada 2026 · Las Vegas</span>
+      <h2 data-depth="20">Shows premium que encienden la noche con <span class="gold-text">estilo</span> y <span class="gold-text">oro</span>.</h2>
+      <div class="slot" aria-label="Año 2026 en tragamonedas" data-depth="10">
+        <div class="digit"><div class="reel" data-target="2">0</div></div>
+        <div class="digit"><div class="reel" data-target="0">0</div></div>
+        <div class="digit"><div class="reel" data-target="2">0</div></div>
+        <div class="digit"><div class="reel" data-target="6">0</div></div>
+      </div>
+      <div class="hero-ctas" data-depth="0" style="text-align:center">
+        <a href="#reserva" class="btn gold" id="cta-hero">¡Reserva Ya!</a>
+        <a href="#paquetes" class="btn">Ver Paquetes</a>
+      </div>
+      <div class="scroll-hint">▼ Desliza para descubrir</div>
+    </div>
+  </section>
 
-<span class="selector">.hero-content</span> {
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">z-index</span>: <span class="value">2</span>;
-    <span class="property">text-shadow</span>: <span class="value">0 0 15px var(--oro)</span>;
-}`;
-                    break;
-                case 2:
-                    code = `<span class="comment">// Texto con efecto de video</span>
-<span class="selector">.video-text-hero</span> {
-    <span class="property">font-size</span>: <span class="value">5rem</span>;
-    <span class="property">font-weight</span>: <span class="value">900</span>;
-    <span class="property">text-transform</span>: <span class="value">uppercase</span>;
-    <span class="property">background</span>: <span class="value">url('ruta/a/tu/video-o-imagen.jpg') center/cover</span>;
-    <span class="property">background-clip</span>: <span class="value">text</span>;
-    <span class="property">-webkit-background-clip</span>: <span class="value">text</span>;
-    <span class="property">color</span>: <span class="value">transparent</span>;
-    <span class="property">animation</span>: <span class="value">textZoom 10s infinite alternate</span>;
-}
+  <section id="chicos">
+    <div class="container">
+      <h3 class="section-title">Chicos</h3>
+      <p class="section-sub">Talento, presencia y performance de alto impacto. Vibra de casino con clase.</p>
+      <div class="carousel" id="slider-chicos">
+        <button class="nav prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <div class="viewport gold-border">
+          <div class="track">
+            <article class="card tilt"><span class="tag">Nuevo</span><img src="https://images.unsplash.com/photo-1562158070-9a6c0d7b3550?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino elegante"/><div class="overlay"><strong class="name">Axel</strong><span class="pill">Gold Show</span></div></article>
+            <article class="card tilt"><span class="tag">Top</span><img src="https://images.unsplash.com/photo-1518826778770-0a42a9c91f99?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino dark"/><div class="overlay"><strong class="name">Dante</strong><span class="pill">VIP</span></div></article>
+            <article class="card tilt"><span class="tag">Vegas</span><img src="https://images.unsplash.com/photo-1617137968427-85924c800a4e?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino neón"/><div class="overlay"><strong class="name">Leon</strong><span class="pill">Neón</span></div></article>
+            <article class="card tilt"><span class="tag">Hot</span><img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?q=80&w=1600&auto=format&fit=crop" alt="Modelo masculino fitness"/><div class="overlay"><strong class="name">Marco</strong><span class="pill">Jackpot</span></div></article>
+          </div>
+        </div>
+        <button class="nav next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m10 6 1.41 1.41L7.83 11H20v2H7.83l3.58 3.59L10 18l-6-6z"/></svg></button>
+        <div class="progress"><span></span></div>
+      </div>
+    </div>
+  </section>
 
-<span class="selector">@keyframes textZoom</span> {
-    <span class="value">0%</span> { <span class="property">transform</span>: <span class="value">scale(1)</span>; }
-    <span class="value">100%</span> { <span class="property">transform</span>: <span class="value">scale(1.1)</span>; }
-}
+  <section id="chicas">
+    <div class="container">
+      <h3 class="section-title">Chicas</h3>
+      <p class="section-sub">Elegancia, carisma y coreografías que brillan con oro líquido.</p>
+      <div class="carousel" id="slider-chicas">
+        <button class="nav prev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <div class="viewport gold-border">
+          <div class="track">
+            <article class="card tilt"><span class="tag">Nuevo</span><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina rojo"/><div class="overlay"><strong class="name">Mía</strong><span class="pill">Rouge</span></div></article>
+            <article class="card tilt"><span class="tag">Top</span><img src="https://images.unsplash.com/photo-1515468381879-40d0ded81016?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina neón"/><div class="overlay"><strong class="name">Vega</strong><span class="pill">VIP</span></div></article>
+            <article class="card tilt"><span class="tag">Vegas</span><img src="https://images.unsplash.com/photo-1503341338981-c128f3b4f0ac?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina sombrero luces"/><div class="overlay"><strong class="name">Noa</strong><span class="pill">Neón</span></div></article>
+            <article class="card tilt"><span class="tag">Hot</span><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1600&auto=format&fit=crop" alt="Modelo femenina glamour"/><div class="overlay"><strong class="name">Luna</strong><span class="pill">Jackpot</span></div></article>
+          </div>
+        </div>
+        <button class="nav next" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m10 6 1.41 1.41L7.83 11H20v2H7.83l3.58 3.59L10 18l-6-6z"/></svg></button>
+        <div class="progress"><span></span></div>
+      </div>
+    </div>
+  </section>
 
-<span class="comment">&lt;!-- HTML --></span>
-&lt;div class="video-text-hero">SHOW VEGAS&lt;/div>`;
-                    break;
-                case 3:
-                    code = `<span class="comment">// Efecto de cortina de teatro</span>
-<span class="selector">.curtain-effect</span> {
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">height</span>: <span class="value">100vh</span>;
-    <span class="property">overflow</span>: <span class="value">hidden</span>;
-}
+  <section id="paquetes">
+    <div class="container">
+      <h3 class="section-title">Paquetes</h3>
+      <p class="section-sub">Soluciones listas para tu evento: cumpleaños, despedidas y shows privados con vibra Las Vegas.</p>
+      <div class="pricing">
+        <article class="price-card gold-border"><div class="header"><span class="badge">Starter</span><span class="price">$2,999</span></div><ul class="features"><li>1 artista · 30 min</li><li>Playlist temática</li><li>Accesorios básicos</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
+        <article class="price-card gold-border"><div class="header"><span class="badge">Gold</span><span class="price">$5,999</span></div><ul class="features"><li>2 artistas · 45 min</li><li>Coreografía especial</li><li>Iluminación neón</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
+        <article class="price-card gold-border"><div class="header"><span class="badge">Jackpot</span><span class="price">$9,999</span></div><ul class="features"><li>3 artistas · 60 min</li><li>Show temático Las Vegas</li><li>DJ + efectos especiales</li></ul><a href="#reserva" class="btn gold">Reservar</a></article>
+      </div>
+    </div>
+  </section>
 
-<span class="selector">.curtain-left, .curtain-right</span> {
-    <span class="property">position</span>: <span class="value">absolute</span>;
-    <span class="property">top</span>: <span class="value">0</span>;
-    <span class="property">height</span>: <span class="value">100%</span>;
-    <span class="property">width</span>: <span class="value">50%</span>;
-    <span class="property">background</span>: <span class="value">linear-gradient(to right, var(--rojo), #8b0000)</span>;
-    <span class="property">transition</span>: <span class="value">transform 1.5s ease</span>;
-}
+  <section id="reserva">
+    <div class="container">
+      <h3 class="section-title">¡Reserva Ya!</h3>
+      <p class="section-sub">Dinos fecha, ciudad y tipo de evento. Respondemos con disponibilidad inmediata.</p>
+      <div class="cta-big gold-border">
+        <a class="whatsapp" href="https://wa.me/521234567890?text=Hola%20quiero%20reservar%20un%20show%20Las%20Vegas" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.84 11.84 0 0 0 12.04 0C5.75 0 .72 5.03.72 11.32c0 2 .53 3.97 1.53 5.7L0 24l7.2-2.2a11.2 11.2 0 0 0 4.84 1.09h.01c6.29 0 11.32-5.03 11.32-11.32 0-3.02-1.17-5.86-3.36-8.05zM12.05 21.1a9.8 9.8 0 0 1-4.98-1.36l-.36-.21-4.28 1.31 1.36-4.16-.23-.43a9.8 9.8 0 1 1 8.49 4.85zm5.7-7.35c-.31-.16-1.83-.9-2.11-1.01-.28-.1-.48-.16-.68.16-.19.31-.78 1.01-.96 1.21-.18.2-.35.23-.66.08-.31-.16-1.29-.48-2.46-1.54-.91-.81-1.53-1.82-1.71-2.12-.18-.31-.02-.48.14-.63.14-.14.31-.36.46-.54.15-.18.2-.31.31-.52.1-.2.05-.39-.03-.55-.08-.16-.68-1.64-.93-2.24-.24-.58-.49-.5-.68-.5-.17 0-.37-.02-.57-.02-.21 0-.55.08-.84.39-.28.31-1.1 1.08-1.1 2.64 0 1.55 1.13 3.06 1.29 3.27.16.21 2.22 3.39 5.38 4.75.75.32 1.33.51 1.79.66.75.24 1.42.21 1.95.13.6-.09 1.83-.75 2.09-1.47.26-.72.26-1.34.18-1.47-.07-.13-.28-.21-.6-.37z"/></svg>
+          Reservar por WhatsApp
+        </a>
+        <a class="btn" href="#paquetes">Ver Paquetes</a>
+        <a class="btn" href="#inicio">Volver al inicio</a>
+      </div>
+    </div>
+  </section>
 
-<span class="selector">.curtain-left</span> {
-    <span class="property">left</span>: <span class="value">0</span>;
-    <span class="property">transform</span>: <span class="value">translateX(-100%)</span>;
-}
+  <footer>
+    <div class="container">AGENCIA DE STRIPPERS H Y M 2026 · HANT PRODUCTIONS 25</div>
+  </footer>
 
-<span class="selector">.curtain-right</span> {
-    <span class="property">right</span>: <span class="value">0</span>;
-    <span class="property">transform</span>: <span class="value">translateX(100%)</span>;
-}
+  <script>
+    // Sticky header
+    const header = document.getElementById('header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 6);
+    document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-<span class="selector">.curtain-effect:hover .curtain-left</span> {
-    <span class="property">transform</span>: <span class="value">translateX(0)</span>;
-}
+    // Mobile menu
+    const hamb = document.getElementById('hamb');
+    const mnav = document.getElementById('mnav');
+    const toggleMenu = () => { const open = mnav.classList.toggle('open'); hamb.classList.toggle('active', open); hamb.setAttribute('aria-expanded', String(open)); document.body.style.overflow = open ? 'hidden' : ''; };
+    hamb.addEventListener('click', toggleMenu);
+    mnav.querySelectorAll('.mn-link').forEach(a => a.addEventListener('click', toggleMenu));
 
-<span class="selector">.curtain-effect:hover .curtain-right</span> {
-    <span class="property">transform</span>: <span class="value">translateX(0)</span>;
-}
+    // Shiny hover coords
+    document.querySelectorAll('.btn.gold, .cta').forEach(btn=>{
+      btn.addEventListener('pointermove', e=>{ const r = btn.getBoundingClientRect(); btn.style.setProperty('--x', (e.clientX - r.left)+ 'px'); btn.style.setProperty('--y', (e.clientY - r.top)+ 'px'); });
+    });
 
-<span class="comment">// JavaScript para abrir cortinas automáticamente</span>
-<span class="selector">document.addEventListener('DOMContentLoaded', function()</span> {
-    <span class="value">setTimeout</span>(() => {
-        <span class="value">document.querySelector</span>('.curtain-left').style.transform = 'translateX(0)';
-        <span class="value">document.querySelector</span>('.curtain-right').style.transform = 'translateX(0)';
-    }, 1000);
-});`;
-                    break;
-                case 4:
-                    code = `<span class="comment">// Efecto de humo escénico</span>
-<span class="selector">.smoke-effect</span> {
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">height</span>: <span class="value">100vh</span>;
-    <span class="property">overflow</span>: <span class="value">hidden</span>;
-    <span class="property">background</span>: <span class="value">linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9))</span>;
-}
+    // Slot reels (2026)
+    const reels = document.querySelectorAll('.digit .reel');
+    function spinReels(){
+      reels.forEach((el)=>{ const target = +el.dataset.target; let seq=''; for(let k=0;k<20;k++){ seq += (k%10) } seq += target; el.textContent = seq; const h = el.parentElement.clientHeight; const total = seq.length; el.style.transform='translateY(0)'; el.style.transition='transform 1.2s cubic-bezier(.2,.7,.2,1)'; requestAnimationFrame(()=>{ el.style.transform = `translateY(${-h*(total-1)}px)`; }); });
+    }
+    window.addEventListener('load', ()=> setTimeout(spinReels, 450));
 
-<span class="selector">.smoke-layer</span> {
-    <span class="property">position</span>: <span class="value">absolute</span>;
-    <span class="property">bottom</span>: <span class="value">0</span>;
-    <span class="property">width</span>: <span class="value">100%</span>;
-    <span class="property">height</span>: <span class="value">100%</span>;
-    <span class="property">background</span>: <span class="value">url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="rgba(255,215,0,0.1)" d="M0,0 C20,40 50,30 100,0 L100,100 L0,100 Z"/></svg>') bottom no-repeat</span>;
-    <span class="property">background-size</span>: <span class="value">100% 50%</span>;
-    <span class="property">animation</span>: <span class="value">smokeAnimation 15s infinite alternate</span>;
-}
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target);} }); }, {threshold:.15});
+    document.querySelectorAll('.card, .price-card').forEach(el=> io.observe(el));
 
-<span class="selector">@keyframes smokeAnimation</span> {
-    <span class="value">0%</span> { <span class="property">transform</span>: <span class="value">translateY(0) scale(1); opacity: 0.3</span>; }
-    <span class="value">50%</span> { <span class="property">transform</span>: <span class="value">translateY(-20px) scale(1.1); opacity: 0.5</span>; }
-    <span class="value">100%</span> { <span class="property">transform</span>: <span class="value">translateY(0) scale(1); opacity: 0.3</span>; }
-}
+    // Parallax
+    const group = document.getElementById('parallax');
+    function parallax(e){ const r = group.getBoundingClientRect(); const cx = r.left + r.width/2; const cy = r.top + r.height/2; const dx = (e.clientX - cx)/r.width; const dy = (e.clientY - cy)/r.height; group.querySelectorAll('[data-depth]').forEach(el=>{ const d = (+el.dataset.depth||0)/100; el.style.transform = `translate3d(${dx*-12*d}px, ${dy*-18*d}px, 0)`; }); }
+    window.addEventListener('pointermove', parallax);
 
-<span class="selector">.hero-text</span> {
-    <span class="property">text-shadow</span>: <span class="value">0 0 15px var(--rojo)</span>;
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">z-index</span>: <span class="value">2</span>;
-}`;
-                    break;
-                case 5:
-                    code = `<span class="comment">// Efecto de tarjeta giratoria</span>
-<span class="selector">.flip-card-hero</span> {
-    <span class="property">perspective</span>: <span class="value">1000px</span>;
-    <span class="property">width</span>: <span class="value">100%</span>;
-    <span class="property">max-width</span>: <span class="value">500px</span>;
-    <span class="property">margin</span>: <span class="value">0 auto</span>;
-}
+    // Sparkles canvas
+    const cvs = document.getElementById('sparkles'); const ctx = cvs.getContext('2d'); let W,H,particles=[]; const N=140;
+    function resize(){ W = cvs.width = innerWidth * devicePixelRatio; H = cvs.height = innerHeight * devicePixelRatio; }
+    resize(); addEventListener('resize', resize);
+    function rnd(a,b){ return a + Math.random()*(b-a); }
+    function spawn(){ particles = Array.from({length:N},()=>({ x:rnd(0,W), y:rnd(0,H), r:rnd(0.6,2.2)*devicePixelRatio, a:rnd(.25,.8), vx:rnd(-.05,.05)*devicePixelRatio, vy:rnd(.15,.45)*devicePixelRatio })); }
+    spawn();
+    function tick(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.y>H) { p.y = -10; p.x=rnd(0,W);} const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4); g.addColorStop(0, `rgba(255,239,170,${p.a})`); g.addColorStop(1, 'rgba(255,239,170,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(tick); }
+    tick();
 
-<span class="selector">.flip-card-inner</span> {
-    <span class="property">position</span>: <span class="value">relative</span>;
-    <span class="property">width</span>: <span class="value">100%</span>;
-    <span class="property">height</span>: <span class="value">300px</span>;
-    <span class="property">transform-style</span>: <span class="value">preserve-3d</span>;
-    <span class="property">transition</span>: <span class="value">transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1)</span>;
-}
+    // Carousels
+    function makeSlider(rootSel){
+      const root = document.querySelector(rootSel); if(!root) return;
+      const viewport = root.querySelector('.viewport');
+      const track = root.querySelector('.track');
+      const prev = root.querySelector('.nav.prev');
+      const next = root.querySelector('.nav.next');
+      const bar = root.querySelector('.progress span');
+      const cards = [...track.querySelectorAll('.card')];
 
-<span class="selector">.flip-card-hero:hover .flip-card-inner</span> {
-    <span class="property">transform</span>: <span class="value">rotateY(180deg)</span>;
-}
+      function setActive(){ const c = viewport.getBoundingClientRect().left + viewport.clientWidth/2; let nearest=null, mind=1e9; cards.forEach(card=>{ const r = card.getBoundingClientRect(); const d = Math.abs(r.left + r.width/2 - c); if(d<mind){ mind=d; nearest=card; } }); cards.forEach(el=> el.classList.toggle('active', el===nearest)); }
+      function setProgress(){ const max = track.scrollWidth - viewport.clientWidth; const p = max>0 ? viewport.scrollLeft / max : 0; bar.style.width = Math.max(8, (p*100)) + '%'; }
+      const step = (dir=1)=>{ const w = cards[0].getBoundingClientRect().width; viewport.scrollBy({left: dir*(w+14), behavior:'smooth'}); };
+      prev.addEventListener('click', ()=> step(-1)); next.addEventListener('click', ()=> step(1));
 
-<span class="selector">.flip-card-front, .flip-card-back</span> {
-    <span class="property">position</span>: <span class="value">absolute</span>;
-    <span class="property">width</span>: <span class="value">100%</span>;
-    <span class="property">height</span>: <span class="value">100%</span>;
-    <span class="property">backface-visibility</span>: <span class="value">hidden</span>;
-    <span class="property">border-radius</span>: <span class="value">15px</span>;
-    <span class="property">display</span>: <span class="value">flex</span>;
-    <span class="property">align-items</span>: <span class="value">center</span>;
-    <span class="property">justify-content</span>: <span class="value">center</span>;
-    <span class="property">padding</span>: <span class="value">30px</span>;
-    <span class="property">text-align</span>: <span class="value">center</span>;
-}
+      let isDown=false, startX=0, startLeft=0;
+      viewport.addEventListener('pointerdown', e=>{ isDown=true; startX=e.clientX; startLeft=viewport.scrollLeft; viewport.setPointerCapture(e.pointerId); });
+      viewport.addEventListener('pointermove', e=>{ if(!isDown) return; viewport.scrollLeft = startLeft - (e.clientX - startX); });
+      ['pointerup','pointercancel','mouseleave'].forEach(ev=> viewport.addEventListener(ev, ()=> isDown=false));
 
-<span class="selector">.flip-card-front</span> {
-    <span class="property">background</span>: <span class="value">linear-gradient(45deg, var(--negro), var(--gris-oscuro))</span>;
-    <span class="property">color</span>: <span class="value">var(--blanco)</span>;
-    <span class="property">font-size</span>: <span class="value">1.8rem</span>;
-    <span class="property">font-weight</span>: <span class="value">bold</span>;
-}
+      viewport.addEventListener('wheel', e=>{ if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){ e.preventDefault(); viewport.scrollLeft += e.deltaY; } }, {passive:false});
+      viewport.addEventListener('scroll', ()=>{ setActive(); setProgress(); }, {passive:true});
+      window.addEventListener('resize', ()=>{ setActive(); setProgress(); });
+      setActive(); setProgress();
 
-<span class="selector">.flip-card-back</span> {
-    <span class="property">background</span>: <span class="value">var(--degradado-oro)</span>;
-    <span class="property">color</span>: <span class="value">var(--negro)</span>;
-    <span class="property">transform</span>: <span class="value">rotateY(180deg)</span>;
-    <span class="property">flex-direction</span>: <span class="value">column</span>;
-}
-
-<span class="selector">.flip-card-back i</span> {
-    <span class="property">font-size</span>: <span class="value">3rem</span>;
-    <span class="property">margin-bottom</span>: <span class="value">20px</span>;
-}`;
-                    break;
-            }
-            
-            codeDisplay.innerHTML = code;
-        }
-
-        // Inicializar efectos de demostración
-        function initDemos() {
-            // Efecto de cortina se abre automáticamente después de un tiempo
-            setTimeout(() => {
-                const curtainLeft = document.querySelector('.curtain-left');
-                const curtainRight = document.querySelector('.curtain-right');
-                
-                if (curtainLeft && curtainRight) {
-                    curtainLeft.style.transform = 'translateX(0)';
-                    curtainRight.style.transform = 'translateX(0)';
-                    
-                    // Cerrar después de 3 segundos
-                    setTimeout(() => {
-                        curtainLeft.style.transform = 'translateX(-100%)';
-                        curtainRight.style.transform = 'translateX(100%)';
-                    }, 3000);
-                }
-            }, 1000);
-        }
-
-        // Iniciar cuando el documento esté cargado
-        document.addEventListener('DOMContentLoaded', initDemos);
-    </script>
+      let auto = setInterval(()=> step(1), 4500);
+      root.addEventListener('mouseenter', ()=> clearInterval(auto));
+      root.addEventListener('mouseleave', ()=> auto = setInterval(()=> step(1), 4500));
+    }
+    makeSlider('#slider-chicos');
+    makeSlider('#slider-chicas');
+  </script>
 </body>
 </html>
